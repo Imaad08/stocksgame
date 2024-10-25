@@ -252,10 +252,6 @@ permalink: /stocks/test
                         <td>Microsoft</td>
                         <td>$342,981</td>
                     </tr>
-                    <tr>
-                        <td>Amazon</td>
-                        <td>$298,376</td>
-                    </tr>
                 </table>
             </div>
         </div>
