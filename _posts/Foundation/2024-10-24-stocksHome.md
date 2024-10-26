@@ -1,309 +1,356 @@
 ---
 layout: none
-permalink: /stocks/home
+permalink: /stocks/test
 ---
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Market Dashboard</title>
+    <title>Game Menu</title>
+    <link rel="stylesheet" href="indexstyles.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #001f3f; /* Dark blue background */
-            color: #fff;
-        }
-        .navbar .logo {
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .navbar .nav-buttons {
-            display: flex;
-            gap: 20px;
-        }
-        .navbar .nav-buttons a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        .navbar .nav-buttons a:hover {
-            background-color: #ff8c00; /* Orange hover effect */
-        }
-        .dashboard {
-            padding: 20px;
-            display: flex;
-            justify-content: flex-start;
-            gap: 40px;
-        }
-        .dashboard-content {
-            width: 70%; /* Increased width for the left side */
-        }
-        .sidebar {
-            width: 25%; /* Width for the right side */
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .stock-table, .your-stocks {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .your-stocks, .stock-table {
-            height: 300px; /* Height for tables */
-        }
-        .stock-table table, .your-stocks table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .stock-table table, th, td, .your-stocks table, th, td {
-            border: none; /* Removed the border to make it invisible */
-        }
-        .stock-table th, td, .your-stocks th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        .stock-table th, .your-stocks th {
-            background-color: #f2f2f2;
-        }
-        .welcome {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .summary-cards {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-        }
-        .card {
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex: 1;
             text-align: center;
-            color: #fff; /* Text color set to white */
+            margin-top: 100px;
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/premium-vector/vector-binary-code-green-background-big-data-programming-hacking-deep-decryption-encryption-computer-streaming-numbers-1-0-coding-hacker-concept_167184-283.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            height: 100vh;
         }
-        .card-orange {
-            background-color: #FF8C00; /* Orange color */
-        }
-        .card-purple {
-            background-color: #6A0DAD; /* Purple color */
-        }
-        .card-darkblue {
-            background-color: #001f3f; /* Dark blue color */
-        }
-        .card h2 {
-            font-size: 20px;
-        }
-        .card p {
-            font-size: 36px;
-            font-weight: bold;
-        }
-        .chart-container {
+        button,button::after {
+            padding: 10px 50px;
+            font-size: 80px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: transparent;
             position: relative;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 20px 0;
-            display: flex;
-            gap: 20px;
         }
-        .chart {
-            height: 300px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #999;
-            flex: 1;
-        }
-        .search-container {
-            margin-bottom: 20px; /* Add margin to space it out */
-            display: flex;
-        }
-        .search-container input[type="text"] {
-            width: 100%; /* Full width of the graph */
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            outline: none;
-            font-size: 16px;
-        }
-        .add-chart-button {
+        button::after {
+            --move1: inset(50% 50% 50% 50%);
+            --move2: inset(31% 0 40% 0);
+            --move3: inset(39% 0 15% 0);
+            --move4: inset(45% 0 40% 0);
+            --move5: inset(45% 0 6% 0);
+            --move6: inset(14% 0 61% 0);
+            clip-path: var(--move1);
+            content: 'GLITCH';
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff8c00;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: block;
+        }
+        button:hover::after {
+            animation: glitch_4011 1s;
+            text-shadow: 10 10px 10px black;
+            animation-timing-function: steps(2, end);
+            text-shadow: -3px -3px 0px #1df2f0, 3px 3px 0px #E94BE8;
+            background-color: transparent;
+            border: 3px solid rgb(0, 255, 213);
+        }
+        button:hover {
+            text-shadow: -1px -1px 0px #1df2f0, 1px 1px 0px #E94BE8;
+        }
+        button:hover {
+            background-color: transparent;
+            border: 1px solid rgb(0, 255, 213);
+            box-shadow: 0px 10px 10px -10px rgb(0, 255, 213);
+        }
+        @keyframes glitch_4011 {
+            0% {
+                clip-path: var(--move1);
+                transform: translate(0px,-10px);
             }
+            10% {
+                clip-path: var(--move2);
+                transform: translate(-10px,10px);
+            }
+            20% {
+                clip-path: var(--move3);
+                transform: translate(10px,0px);
+            }
+            30% {
+                clip-path: var(--move4);
+                transform: translate(-10px,10px);
+            }
+            40% {
+                clip-path: var(--move5);
+                transform: translate(10px,-10px);
+            }
+            50% {
+                clip-path: var(--move6);
+                transform: translate(-10px,10px);
+            }
+            60% {
+                clip-path: var(--move1);
+                transform: translate(10px,-10px);
+            }
+            70% {
+                clip-path: var(--move3);
+                transform: translate(-10px,10px);
+            }
+            80% {
+                clip-path: var(--move2);
+                transform: translate(10px,-10px);
+            }
+            90% {
+                clip-path: var(--move4);
+                transform: translate(-10px,10px);
+            }
+            100% {
+                clip-path: var(--move1);
+                transform: translate(0);
+            }
+        }
+        .glitch {
+            position: relative;
+            font-size: 100px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #fff;
+            letter-spacing: 5px;
+            z-index: 1;
+            animation: shift 1s ease-in-out infinite alternate;
+        }
+        .glitch:before,
+        .glitch:after {
+            display: block;
+            content: attr(data-glitch);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+        }
+        .glitch:before {
+            animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #8b00ff;
+            z-index: -1;
+        }
+        .glitch:after {
+            animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+            color: #00e571;
+            z-index: -2;
+        }
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-3px, 3px);
+            }
+            40% {
+                transform: translate(-3px, -3px);
+            }
+            60% {
+                transform: translate(3px, 3px);
+            }
+            80% {
+                transform: translate(3px, -3px);
+            }
+            to {
+                transform: translate(0);
+            }
+        }
+        @keyframes shift {
+            0%, 40%, 44%, 58%, 61%, 65%, 69%, 73%, 100% {
+                transform: skewX(0deg);
+            }
+            41% {
+                transform: skewX(10deg);
+            }
+            42% {
+                transform: skewX(-10deg);
+            }
+            59% {
+                transform: skewX(40deg) skewY(10deg);
+            }
+            60% {
+                transform: skewX(-40deg) skewY(-10deg);
+            }
+            63% {
+                transform: skewX(10deg) skewY(-5deg);
+            }
+            70% {
+                transform: skewX(-50deg) skewY(-20deg);
+            }
+            71% {
+                transform: skewX(10deg) skewY(-10deg);
+            }
+        }
+        .login-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* allows the cards to wrap onto the next line if the screen is too small */
+    color: #fff; /* set text to white */
+    padding: 20px;
+    border-radius: 10px;
+}
+.login-card {
+    margin-top: 0; /* remove the top margin */
+    width: 45%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    background-color: #000; /* set background to black */
+    color: #fff; /* set text to white */
+    background-position: center center;
+}
+.login-card input,
+.login-card label,
+.login-card button {
+    color: #fff; /* set input text, label, and button text to white */
+}
+.login-card input {
+    background-color: #333; /* set input background to dark gray */
+    border: 1px solid #fff; /* white border for inputs */
+}
+.login-card h1 {
+    margin-bottom: 20px;
+}
+.signup-card {
+    margin-top: 0; /* remove the top margin */
+    width: 45%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+.signup-card h1 {
+    margin-bottom: 20px;
+}
     </style>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="logo">NITD</div>
-        <div class="nav-buttons">
-            <a href="#">Home</a>
-            <a href="#">Stocks</a>
-            <a href="#">Portfolio</a>
-            <a href="#">Upgrades</a> <!-- Added "Upgrades" button -->
-            <a href="#">Profile</a>
+    <div style="text-align: center; margin-top: 100px;">
+        <div class="loader">
+            <div data-glitch="CSA Student: The Adventure" class="glitch">CSA Student: The Adventure</div>
         </div>
-    </nav>
-
-    <!-- Dashboard Content -->
-    <div class="dashboard">
-        <div class="dashboard-content">
-            <h1 class="welcome">Hi Rafael, Welcome Back</h1>
-            <p>Invest your money with small risk!</p>
-
-            <div class="summary-cards">
-                <div class="card card-orange">
-                    <h2>Today's Return</h2>
-                    <p>$39,345</p>
-                </div>
-                <div class="card card-purple">
-                    <h2>Total Return</h2>
-                    <p>$42,345</p>
-                </div>
-                <div class="card card-darkblue">
-                    <h2>Revenue Return</h2>
-                    <p>$52,345</p>
-                </div>
-            </div>
-
-            <div class="search-container">
-               <input type="text" placeholder="Search...">
-            </div>
-
-            <div class="chart-container" id="chartContainer">
-                <button class="add-chart-button" onclick="addNewChart()">+</button>
-                <div class="chart" id="chart1">[Graph Placeholder]</div>
-            </div>
-            </div>
-
-            <div class="sidebar">
-            <!-- "Your Stocks" section with table -->
-            <div class="your-stocks">
-                <h3>Your Stocks</h3>
-                <table>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Price</th>
-                    </tr>
-                    <tr>
-                        <td>Netflix</td>
-                        <td>$490,123</td>
-                    </tr>
-                    <tr>
-                        <td>Tesla</td>
-                        <td>$920,456</td>
-                    </tr>
-                    <tr>
-                        <td>Amazon</td>
-                        <td>$1,123,987</td>
-                    </tr>
-                    <tr>
-                        <td>Adobe</td>
-                        <td>$670,345</td>
-                    </tr>
-                    <tr>
-                        <td>Nvidia</td>
-                        <td>$820,321</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- Stock Prices table moved to the bottom -->
-            <div class="stock-table">
-                <h3>Stock Prices</h3>
-                <table>
-                    <tr>
-                        <th>Stock</th>
-                        <th>Price</th>
-                    </tr>
-                    <tr>
-                        <td>Spotify</td>
-                        <td>$297,408</td>
-                    </tr>
-                    <tr>
-                        <td>Apple</td>
-                        <td>$142,845</td>
-                    </tr>
-                    <tr>
-                        <td>Google</td>
-                        <td>$273,402</td>
-                    </tr>
-                    <tr>
-                        <td>Facebook</td>
-                        <td>$97,213</td>
-                    </tr>
-                    <tr>
-                        <td>Microsoft</td>
-                        <td>$342,981</td>
-                    </tr>
-                </table>
-            </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar with "Your Stocks" and Stock Prices -->
-        
-        </div>
+        <div class="login-container">
+    <!-- Python Login Form -->
+    <div class="login-card">
+        <h1 id="pythonTitle">User Login</h1>
+        <form id="pythonForm" onsubmit="pythonLogin(); return false;">
+            <p>
+                <label>
+                    ID:
+                    <input type="text" name="uid" id="uid" required>
+                </label>
+            </p>
+            <p>
+                <label>
+                    Password:
+                    <input type="password" name="password" id="password" required>
+                </label>
+            </p>
+            <p>
+                <button type="submit">Login</button>
+            </p>
+            <p id="message" style="color: red;"></p>
+        </form>
+    
+</div>
     </div>
 
-</body>
+<script type="module">
+    import { login, pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
+    // Function to handle Python login
+    window.pythonLogin = function() {
+        const options = {
+            URL: `${pythonURI}/api/authenticate`,
+            callback: pythonDatabase,
+            message: "message",
+            method: "POST",
+            cache: "no-cache",
+            body: {
+                uid: document.getElementById("uid").value,
+                password: document.getElementById("password").value,
+            }
+        };
+        login(options);
+    }
 
-<script>
-        function addNewChart() {
-            const chartContainer = document.getElementById('chartContainer');
-            const chart1 = document.getElementById('chart1');
+    // Function to handle signup
+    window.signup = function() {
+    const signupButton = document.querySelector(".signup-card button");
 
-            // Set the width of the original chart to 50%
-            chart1.style.flex = '0 0 50%';
+    // Disable the button and change its color
+    signupButton.disabled = true;
+    signupButton.style.backgroundColor = '#d3d3d3'; // Light gray to indicate disabled state
 
-            // Create a new chart placeholder
-            const newChart = document.createElement('div');
-            newChart.classList.add('chart');
-            newChart.innerText = '[New Graph Placeholder]';
-
-            // Add the new chart placeholder to the container
-            chartContainer.appendChild(newChart);
-
-            // Remove the "+" button after adding the new chart
-            document.querySelector('.add-chart-button').style.display = 'none';
+    const signupOptions = {
+        URL: `${pythonURI}/api/user`,
+        method: "POST",
+        cache: "no-cache",
+        body: {
+            name: document.getElementById("name").value,
+            uid: document.getElementById("signupUid").value,
+            password: document.getElementById("signupPassword").value,
+            kasm_server_needed: document.getElementById("kasmNeeded").checked,
         }
-    </script>
+    };
 
-</html>
+    fetch(signupOptions.URL, {
+        method: signupOptions.method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(signupOptions.body)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Signup failed: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById("signupMessage").textContent = "Signup successful!";
+        // Optionally redirect to login page or handle as needed
+        // window.location.href = '{{site.baseurl}}/profile';
+    })
+    .catch(error => {
+        console.error("Signup Error:", error);
+        document.getElementById("signupMessage").textContent = `Signup Error: ${error.message}`;
+        // Re-enable the button if there is an error
+        signupButton.disabled = false;
+        signupButton.style.backgroundColor = ''; // Reset to default color
+    });
+}
+
+
+    // Function to fetch and display Python data
+    function pythonDatabase() {
+        const URL = `${pythonURI}/api/id`;
+
+        fetch(URL, fetchOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Flask server response: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                window.location.href = '{{site.baseurl}}/profile';
+            })
+            .catch(error => {
+                console.error("Python Database Error:", error);
+                const errorMsg = `Python Database Error: ${error.message}`;
+            });
+    }
+
+    // Call relevant database functions on the page load
+    window.onload = function() {
+         pythonDatabase();
+    };
+</script>
