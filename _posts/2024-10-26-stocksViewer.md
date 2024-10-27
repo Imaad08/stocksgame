@@ -16,13 +16,11 @@ title: Stocks Viewer
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f2f5;
       color: #333;
     }
-
     /* Navigation Bar */
     .navbar {
       display: flex;
@@ -52,29 +50,24 @@ title: Stocks Viewer
     .navbar .nav-buttons a:hover {
       background-color: #ff8c00; /* Orange hover effect */
     }
-
     .container {
       display: flex;
       height: 92vh; /* Adjusted height for navbar */
     }
-
     .sidebar {
       width: 20%;
       background-color: #ffffff;
       border-right: 1px solid #ddd;
       padding: 20px;
     }
-
     .sidebar h2 {
       font-size: 1.2em;
       margin-bottom: 20px;
     }
-
     .stock-list {
       display: flex;
       flex-direction: column;
     }
-
     .stock-item {
       display: flex;
       justify-content: space-between;
@@ -83,9 +76,8 @@ title: Stocks Viewer
       border-radius: 4px;
       cursor: pointer;
     }
-
     .stock-item.selected {
-      background-color: #e0f7fa;
+      background-color: rgba(240, 146, 53, 0.7);
     }
 
     .price {
