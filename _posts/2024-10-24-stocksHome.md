@@ -1,6 +1,7 @@
 ---
 layout: none
 permalink: /stocks/home
+title: Stocks Home
 ---
 <html lang="en">
 <head>

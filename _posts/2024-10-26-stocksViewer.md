@@ -1,6 +1,7 @@
 ---
 layout: none
 permalink: /stocks/viewer
+title: Stocks Viewer
 ---
 
 <html lang="en">
@@ -179,9 +180,9 @@ permalink: /stocks/viewer
     <div class="sidebar">
       <h2>Stocks</h2>
       <div class="stock-list">
-        <div class="stock-item selected" onclick="fetchStockData('AAPL')">
+        <div class="stock-item selected" onclick="selectStock('AAPL')">
           <span>AAPL</span>
-          <span class="price">$${data.prices}</span>
+          <span class="price">$271.19</span>
           <span class="change">+1.2%</span>
         </div>
         <div class="stock-item" onclick="selectStock('GOOGL')">
