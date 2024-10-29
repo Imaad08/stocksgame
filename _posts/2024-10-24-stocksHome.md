@@ -172,7 +172,6 @@ title: Stocks Home
     </style>
 </head>
 <body>
-
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">NITD</div>
@@ -184,13 +183,11 @@ title: Stocks Home
             <a href="#">Profile</a>
         </div>
     </nav>
-
     <!-- Dashboard Content -->
     <div class="dashboard">
         <div class="dashboard-content">
             <h1 class="welcome">Hi Rafael, Welcome Back</h1>
             <p>Invest your money with small risk!</p>
-
             <div class="summary-cards">
                 <div class="card card-orange">
                     <h2>Today's Return</h2>
@@ -205,11 +202,9 @@ title: Stocks Home
                     <p>$52,345</p>
                 </div>
             </div>
-
             <div class="search-container">
                <input type="text" placeholder="Search...">
             </div>
-
             <div class="chart-container" id="chartContainer">
                 <button class="add-chart-button" onclick="addNewChart()">
                 +</button>
@@ -217,7 +212,6 @@ title: Stocks Home
                 <div class="chart" id="chart1">[Graph Placeholder]</div>
             </div>
         </div>
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- "Your Stocks" section with table -->
@@ -250,7 +244,6 @@ title: Stocks Home
                     </tr>
                 </table>
             </div>
-
             <div class="stock-table">
                 <h3>Stock Prices</h3>
                 <table>

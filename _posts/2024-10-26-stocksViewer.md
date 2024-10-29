@@ -79,53 +79,42 @@ title: Stocks Viewer
     .stock-item.selected {
       background-color: rgba(240, 146, 53, 0.7);
     }
-
     .price {
       font-weight: bold;
     }
-
     .change {
       color: #388e3c; /* Green for positive change */
     }
-
     .change.negative {
       color: #d32f2f; /* Red for negative change */
     }
-
     .main-content {
       width: 80%;
       padding: 20px;
     }
-
     .header h1 {
       font-size: 2em;
       font-weight: bold;
     }
-
     .header p {
       color: #777;
       margin-bottom: 20px;
     }
-
     .price-info h2 {
       font-size: 2.5em;
       font-weight: bold;
     }
-
     .change.positive {
       color: #388e3c;
     }
-
     .change.negative {
       color: #d32f2f;
     }
-
     .metrics {
       display: flex;
       gap: 15px;
       margin: 20px 0;
     }
-
     .metric {
       background-color: #ffffff;
       border: 1px solid #ddd;
@@ -134,7 +123,6 @@ title: Stocks Viewer
       text-align: center;
       flex: 1;
     }
-
     .chart {
       background-color: #ffffff;
       padding: 15px;
@@ -145,7 +133,6 @@ title: Stocks Viewer
       align-items: center;
       height: 200px;
     }
-
     canvas {
       width: 100% !important; /* Ensures the chart takes full width */
       height: 300px !important; /* Sets the height for the chart */
@@ -214,7 +201,6 @@ title: Stocks Viewer
         </div>
       </div>
     </div>
-
     <!-- Main Content -->
     <div class="main-content">
       <!-- Header -->
@@ -222,13 +208,11 @@ title: Stocks Viewer
         <h1 id="stock-name">Apple Inc. (AAPL)</h1>
         <p id="stock-symbol">NASDAQ: AAPL</p>
       </div>
-
       <!-- Price Info -->
       <div class="price-info">
         <h2 id="stock-price">$174.30</h2>
         <p id="stock-change" class="change positive">+1.2%</p>
       </div>
-
       <!-- Key Metrics -->
       <div class="metrics">
         <div class="metric">
@@ -252,7 +236,6 @@ title: Stocks Viewer
           <span>$124.17</span>
         </div>
       </div>
-
       <!-- Stock Chart -->
       <div class="chart">
         <canvas id="stockChart"></canvas>
