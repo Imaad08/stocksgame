@@ -8,7 +8,7 @@ title: Stocks Viewer
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stock Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     /* CSS Styles */
     * {
@@ -131,11 +131,10 @@ title: Stocks Viewer
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 200px;
     }
     canvas {
       width: 100% !important; /* Ensures the chart takes full width */
-      height: 300px !important; /* Sets the height for the chart */
+      height: 375px !important; /* Sets the height for the chart */
     }
   </style>
 </head>
@@ -238,8 +237,8 @@ title: Stocks Viewer
       </div>
       <!-- Stock Chart -->
       <div class="chart">
-        <canvas id="stockChart"></canvas>
-      </div>
+    <canvas id="stockChart"></canvas>
+  </div>
     </div>
   </div>
 
@@ -247,42 +246,120 @@ title: Stocks Viewer
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
+<<<<<<< HEAD
     async function getStockData() {
         const stockSymbol = document.getElementById("searchBar").value;
         document.getElementById("output").textContent = ""; // Clear previous messages
      try {
-        const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
+=======
+
+    let currentlySelectedStock = null; 
+    let stockChart;
+
+async function selectStock(stock) {
+    if (currentlySelectedStock) {
+        currentlySelectedStock.classList.remove("selected");
+    }
+
+    const selectedStockElement = document.querySelector(`.stock-item[onclick="selectStock('${stock}')"]`);
+    if (selectedStockElement) {
+        selectedStockElement.classList.add("selected");
+        currentlySelectedStock = selectedStockElement;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
         const data = await response.json();
-        // Extract timestamps and prices
+
+        const stockName = data?.chart?.result?.[0]?.meta?.symbol;
+        const stockPrice = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+        const percentChange = await getPercentChange(stock);
+
+        document.getElementById('stock-name').textContent = `${stockName} (${stock})`;
+        document.getElementById('stock-symbol').textContent = `NASDAQ: ${stock}`;
+        document.getElementById('stock-price').textContent = `$${stockPrice.toFixed(2)}`;
+
+        const changeElement = document.getElementById('stock-change');
+        changeElement.textContent = `${percentChange}%`;
+        if (percentChange < 0) {
+            changeElement.classList.add("negative");
+            changeElement.classList.remove("positive");
+        } else {
+            changeElement.classList.add("positive");
+            changeElement.classList.remove("negative");
+        }
+
+        const volume = data?.chart?.result?.[0]?.meta?.regularMarketVolume;
+        const dayHigh = data?.chart?.result?.[0]?.meta?.regularMarketDayHigh;
+        const dayLow = data?.chart?.result?.[0]?.meta?.regularMarketDayLow;
+        const yearHigh = data?.chart?.result?.[0]?.meta?.fiftyTwoWeekHigh;
+        const yearLow = data?.chart?.result?.[0]?.meta?.fiftyTwoWeekLow;
+
+        document.getElementById('volume').textContent = volume ? volume.toLocaleString() : 'N/A';
+        document.getElementById('day-high-low').textContent = dayHigh && dayLow ? `$${dayHigh.toFixed(2)} / $${dayLow.toFixed(2)}` : 'N/A';
+        document.getElementById('year-high-low').textContent = yearHigh && yearLow ? `$${yearHigh.toFixed(2)} / $${yearLow.toFixed(2)}` : 'N/A';
+
         const timestamps = data?.chart?.result?.[0]?.timestamp;
         const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
-        // Check if data exists
         if (timestamps && prices) {
-                // Convert timestamps to readable dates
-                const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
-               displayChart(labels, prices, stockSymbol);
-            } else {
-                console.error(`Data not found for ${stockSymbol}. Response structure:`, data);
-                document.getElementById("output").textContent = `Data not found for ${stockSymbol}.`;
-            }
-        } catch (error) {
-            console.error('Error fetching stock data:', error);
-            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+            const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
+            displayChart(labels, prices, stock);
         }
+    } catch (error) {
+        console.error('Error fetching stock data:', error);
+    }
 }
+
+
+
+async function getStockData(stockSymbol) {
+    try {
+>>>>>>> ba63117 (added graphs fr this time)
+        const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
+        const data = await response.json();
+
+        // Extract relevant information for metrics
+        const volume = data?.chart?.result?.[0]?.meta?.regularMarketVolume || "N/A";
+        const dayHigh = data?.chart?.result?.[0]?.meta?.regularMarketDayHigh || "N/A";
+        const dayLow = data?.chart?.result?.[0]?.meta?.regularMarketDayLow || "N/A";
+        const yearHigh = data?.chart?.result?.[0]?.meta?.fiftyTwoWeekHigh || "N/A";
+        const yearLow = data?.chart?.result?.[0]?.meta?.fiftyTwoWeekLow || "N/A";
+
+        // Update metric elements
+        document.getElementById("volume").textContent = volume;
+        document.getElementById("day-high").textContent = `$${dayHigh}`;
+        document.getElementById("day-low").textContent = `$${dayLow}`;
+        document.getElementById("year-high").textContent = `$${yearHigh}`;
+        document.getElementById("year-low").textContent = `$${yearLow}`;
+
+        // Extract timestamps and prices for chart
+        const timestamps = data?.chart?.result?.[0]?.timestamp || [];
+        const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
+
+        if (timestamps.length && prices.length) {
+            const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
+            displayChart(labels, prices, stockSymbol);
+        } else {
+            console.error(`Data not found for ${stockSymbol}`);
+        }
+    } catch (error) {
+        console.error('Error fetching stock data:', error);
+    }
+}
+
 function displayChart(labels, prices, tickerSymbol) {
     const ctx = document.getElementById('stockChart').getContext('2d');
+
     // Destroy the old chart if it exists
     if (stockChart) {
         stockChart.destroy();
     }
+
     // Create a gradient fill
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Start with purple (rgba)
-    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Fade to transparent
-    // Determine min and max values for the y-axis based on prices
-    const minPrice = Math.min(...prices) * 0.55; // 5% below the minimum price
-    const maxPrice = Math.max(...prices) * 1.05; // 5% above the maximum price
+    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Purple start
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Transparent end
+
     // Create a new chart
     stockChart = new Chart(ctx, {
         type: 'line',
@@ -291,51 +368,39 @@ function displayChart(labels, prices, tickerSymbol) {
             datasets: [{
                 label: tickerSymbol.toUpperCase(),
                 data: prices,
-                borderColor: '#001f3f', // Dark blue color for the line
+                borderColor: '#001f3f',
                 borderWidth: 2,
                 fill: true,
                 backgroundColor: gradient,
                 spanGaps: true,
-                pointRadius: 0, // Remove dots
-                tension: 0.1 // Smooth the line
+                pointRadius: 0,
+                tension: 0.1
             }]
         },
         options: {
-            plugins: {
-                legend: {
-                    display: false // Hide the legend
-                },
-                tooltip: {
-                    enabled: true, // Enable tooltips
-                    mode: 'index', // Tooltip for closest point
-                    intersect: false // Show tooltip when hovering close to the line
-                }
-            },
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false }
+            },
             scales: {
                 x: {
                     title: { display: true, text: 'Timestamp' },
                     ticks: {
                         callback: function(value) {
-                            // Format the timestamp to display only hours
                             return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                         }
-                    },
-                    grid: {
-                        display: false // Remove grid lines on x-axis
                     }
                 },
                 y: {
-                    title: { display: true, text: 'Price (USD)' },
-                    grid: {
-                        display: false // Remove grid lines on y-axis
-                    }
+                    title: { display: true, text: 'Price (USD)' }
                 }
             }
         }
     });
 }
+
 async function getStockPrice(stock) {
         try {
             const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
