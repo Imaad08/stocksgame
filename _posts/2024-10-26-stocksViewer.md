@@ -158,45 +158,45 @@ title: Stocks Viewer
     <div class="sidebar">
       <h2>Stocks</h2>
       <div class="stock-list">
-        <div class="stock-item selected" onclick="selectStock('AAPL')">
+        <div class="stock-item" onclick="selectStock('AAPL')">
           <span>AAPL</span>
-          <span class="price">$271.19</span>
-          <span class="change">+1.2%</span>
+          <span class="price" id="AAPLprice"> $271.19</span>
+          <span class="change" id="AAPLchange">+1.2%</span>
         </div>
         <div class="stock-item" onclick="selectStock('GOOGL')">
           <span>GOOGL</span>
-          <span class="price">$2812.50</span>
-          <span class="change negative">-0.3%</span>
+          <span class="price" id="GOOGprice">$2812.50</span>
+          <span class="change" id="GOOGchange">-0.3%</span>
         </div>
         <div class="stock-item" onclick="selectStock('AMZN')">
           <span>AMZN</span>
-          <span class="price">$3475.00</span>
-          <span class="change">+0.9%</span>
+          <span class="price" id="AMZNprice">$3475.00</span>
+          <span class="change" id="AMZNchange">+0.9%</span>
         </div>
         <div class="stock-item" onclick="selectStock('MSFT')">
           <span>MSFT</span>
-          <span class="price">$295.60</span>
-          <span class="change">+0.5%</span>
+          <span class="price" id="MSFTprice">$295.60</span>
+          <span class="change" id="MSFTchange">+0.5%</span>
         </div>
         <div class="stock-item" onclick="selectStock('TSLA')">
           <span>TSLA</span>
-          <span class="price">$890.30</span>
-          <span class="change negative">-1.1%</span>
+          <span class="price" id="TSLAprice">$890.30</span>
+          <span class="change" id="TSLAchange">-1.1%</span>
         </div>
         <div class="stock-item" onclick="selectStock('NFLX')">
           <span>NFLX</span>
-          <span class="price">$520.80</span>
-          <span class="change">+1.8%</span>
+          <span class="price" id="NFLXprice">$520.80</span>
+          <span class="change" id="NFLXchange">+1.8%</span>
         </div>
-        <div class="stock-item" onclick="selectStock('FB')">
+        <div class="stock-item" onclick="selectStock('META')">
           <span>FB</span>
-          <span class="price">$339.80</span>
-          <span class="change negative">-0.2%</span>
+          <span class="price" id="METAprice">$339.80</span>
+          <span class="change" id="METAchange">-0.2%</span>
         </div>
         <div class="stock-item" onclick="selectStock('NVDA')">
           <span>NVDA</span>
-          <span class="price">$230.45</span>
-          <span class="change">+2.0%</span>
+          <span class="price" id="NVDAprice">$230.45</span>
+          <span class="change" id="NVDAchange">+2.0%</span>
         </div>
       </div>
     </div>
@@ -204,37 +204,29 @@ title: Stocks Viewer
     <div class="main-content">
       <!-- Header -->
       <div class="header">
-        <h1 id="stock-name">Apple Inc. (AAPL)</h1>
-        <p id="stock-symbol">NASDAQ: AAPL</p>
+        <h1 id="stock-name">N/A</h1>
+        <p id="stock-symbol">NASDAQ: N/A</p>
       </div>
       <!-- Price Info -->
       <div class="price-info">
-        <h2 id="stock-price">$174.30</h2>
-        <p id="stock-change" class="change positive">+1.2%</p>
+        <h2 id="stock-price">N/A</h2>
+        <p id="stock-change" class="change positive">N/A</p>
       </div>
       <!-- Key Metrics -->
       <div class="metrics">
-        <div class="metric">
-          <span>Market Cap</span>
-          <span>$2.8 Trillion</span>
-        </div>
-        <div class="metric">
-          <span>P/E Ratio</span>
-          <span>30.5</span>
-        </div>
-        <div class="metric">
-          <span>Dividend Yield</span>
-          <span>0.60%</span>
-        </div>
-        <div class="metric">
-          <span>52-Week High</span>
-          <span>$198.23</span>
-        </div>
-        <div class="metric">
-          <span>52-Week Low</span>
-          <span>$124.17</span>
-        </div>
-      </div>
+    <div class="metric">
+        <span>Volume</span>
+        <span id="volume">N/A</span>
+    </div>
+    <div class="metric">
+        <span>Day High/Low</span>
+        <span id="day-high-low">N/A</span>
+    </div>
+    <div class="metric">
+        <span>52-Week High/Low</span>
+        <span id="year-high-low">N/A</span>
+    </div>
+</div>
       <!-- Stock Chart -->
       <div class="chart">
     <canvas id="stockChart"></canvas>
@@ -246,12 +238,6 @@ title: Stocks Viewer
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
-<<<<<<< HEAD
-    async function getStockData() {
-        const stockSymbol = document.getElementById("searchBar").value;
-        document.getElementById("output").textContent = ""; // Clear previous messages
-     try {
-=======
 
     let currentlySelectedStock = null; 
     let stockChart;
@@ -314,7 +300,6 @@ async function selectStock(stock) {
 
 async function getStockData(stockSymbol) {
     try {
->>>>>>> ba63117 (added graphs fr this time)
         const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
         const data = await response.json();
 
@@ -407,7 +392,7 @@ async function getStockPrice(stock) {
             const data = await response.json();
             console.log(data);
             const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-            const outputElement = document.getElementById("output");
+            //const outputElement = document.getElementById("output");
             if (price !== undefined) {
                 //outputElement.textContent = `The price of ${stock} is: $${price}`;
                 return(price)
@@ -419,36 +404,82 @@ async function getStockPrice(stock) {
             console.error('Error fetching stock data:', error);
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
+}
+        async function getPercentChange(stock) {
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+            const data = await response.json();
+            console.log(data);
+            const newValue = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+            const oldValue = data?.chart?.result?.[0]?.meta?.chartPreviousClose;
+            const percentChange = ((newValue - oldValue) / oldValue) * 100;
+            //const outputElement = document.getElementById("output");
+            if (percentChange !== undefined) {
+                //outputElement.textContent = `The price of ${stock} is: $${price}`;
+                return percentChange.toFixed(2);
+            } else {
+                outputElement.textContent = `Price not found for ${stock}.`;
+                console.error(`Price not found for ${stock}. Response structure:`, data);
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+
 return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(prices[symbol]);
                 }, 0); // Simulate network delay
             }); 
       }
+
       document.addEventListener("DOMContentLoaded", () => {
             updateStockPrices(); // Call the function after DOM is fully loaded
+            initializeStockSelection();
         });
+function initializeStockSelection() {
+    selectStock('AAPL'); // Automatically selects and loads data for Apple
+}
+
 async function updateStockPrices() {
-            const stockSymbols = ['Netflix', 'Tesla', 'Amazon', 'Adobe', 'Nvidia', 'Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
-            const tickerSymbols = ['NFLX', 'TSLA', 'AMZN', 'ADBE', 'NVDA', 'SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
-            const tickerPrices = [];
-            counter = 0; 
-            for (const stock of tickerSymbols) {
-                const price = await getStockPrice(stock);
-                tickerPrices.push(price)              
-                const priceElement = document.getElementById(stockSymbols[counter] + "Price");
-                if (priceElement) {
-                    priceElement.textContent = `$${price}`;
-                } else {
-                    console.error(`Element with ID ${stock + "Price"} not found.`);
-                }
-                counter++;                 
-                //console.log(price);
-                //console.log(tickerPrices);
-                //console.log(priceElement);
-                //console.log(counter);
-            }
-        }
+  const tickerSymbols = ['AAPL', 'GOOG', 'AMZN', 'MSFT', 'TSLA', 'NFLX', 'META', 'NVDA'];
+  const tickerPrices = [];
+  let counter = 0;
+
+  for (const stock of tickerSymbols) {
+    const price = await getStockPrice(stock);
+    const percentChange = await getPercentChange(stock);
+    tickerPrices.push(price);
+
+    const priceElement = document.getElementById(`${tickerSymbols[counter]}price`);
+    const changeElement = document.getElementById(`${tickerSymbols[counter]}change`);
+
+    if (priceElement) {
+      priceElement.textContent = `$${price}`;
+    } else {
+      console.error(`Element with ID ${stock}price not found.`);
+    }
+
+    if (changeElement) {
+      changeElement.textContent = `${percentChange}%`;
+      
+      // Update class based on whether percentChange is positive or negative
+      if (percentChange < 0) {
+        changeElement.classList.add("negative");
+        changeElement.classList.remove("positive");
+      } else {
+        changeElement.classList.add("positive");
+        changeElement.classList.remove("negative");
+      }
+    } else {
+      console.error(`Element with ID ${stock}change not found.`);
+    }
+
+    counter++;
+  }
+}
+
+
   </script>
 
 </body>
