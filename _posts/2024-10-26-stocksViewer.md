@@ -215,16 +215,24 @@ title: Stocks Viewer
       <!-- Key Metrics -->
       <div class="metrics">
     <div class="metric">
-        <span>Volume</span>
+        <span>Volume:</span>
         <span id="volume">N/A</span>
     </div>
     <div class="metric">
-        <span>Day High/Low</span>
-        <span id="day-high-low">N/A</span>
+        <span>Day High:</span>
+        <span id="day-high">N/A</span>
     </div>
     <div class="metric">
-        <span>52-Week High/Low</span>
-        <span id="year-high-low">N/A</span>
+        <span>52-Week High:</span>
+        <span id="year-high">N/A</span>
+    </div>
+    <div class="metric">
+        <span>Day Low:</span>
+        <span id="day-low">N/A</span>
+    </div>
+    <div class="metric">
+        <span>52-Week Low:</span>
+        <span id="year-low">N/A</span>
     </div>
 </div>
       <!-- Stock Chart -->
@@ -282,8 +290,16 @@ async function selectStock(stock) {
         const yearLow = data?.chart?.result?.[0]?.meta?.fiftyTwoWeekLow;
 
         document.getElementById('volume').textContent = volume ? volume.toLocaleString() : 'N/A';
-        document.getElementById('day-high-low').textContent = dayHigh && dayLow ? `$${dayHigh.toFixed(2)} / $${dayLow.toFixed(2)}` : 'N/A';
-        document.getElementById('year-high-low').textContent = yearHigh && yearLow ? `$${yearHigh.toFixed(2)} / $${yearLow.toFixed(2)}` : 'N/A';
+        //document.getElementById('day-high-low').textContent = dayHigh && dayLow ? `$${dayHigh.toFixed(2)} / $${dayLow.toFixed(2)}` : 'N/A';
+        //document.getElementById('year-high-low').textContent = yearHigh && yearLow ? `$${yearHigh.toFixed(2)} / $${yearLow.toFixed(2)}` : 'N/A';
+
+        document.getElementById('day-high').textContent = dayHigh ? `$${dayHigh.toFixed(2)}` : 'N/A';
+        document.getElementById('year-high').textContent = dayHigh ? `$${yearHigh.toFixed(2)}` : 'N/A';
+
+        document.getElementById('day-low').textContent = dayLow ? `$${dayLow.toFixed(2)}` : 'N/A';
+        document.getElementById('year-low').textContent = dayLow ? `$${yearLow.toFixed(2)}` : 'N/A';
+
+
 
         const timestamps = data?.chart?.result?.[0]?.timestamp;
         const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
