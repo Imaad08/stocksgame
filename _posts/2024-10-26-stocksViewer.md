@@ -160,78 +160,78 @@ title: Stocks Viewer
       <div class="stock-list">
   <div class="stock-item" onclick="selectStock('AAPL')">
     <span>AAPL</span>
-    <span class="price" id="AAPLprice"> $271.19</span>
-    <span class="change" id="AAPLchange">+1.2%</span>
+    <span class="price" id="AAPLprice">NA</span>
+    <span class="change" id="AAPLchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('GOOGL')">
     <span>GOOGL</span>
-    <span class="price" id="GOOGprice">$2812.50</span>
-    <span class="change" id="GOOGchange">-0.3%</span>
+    <span class="price" id="GOOGprice">NA</span>
+    <span class="change" id="GOOGchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('AMZN')">
     <span>AMZN</span>
-    <span class="price" id="AMZNprice">$3475.00</span>
-    <span class="change" id="AMZNchange">+0.9%</span>
+    <span class="price" id="AMZNprice">NA</span>
+    <span class="change" id="AMZNchange">+NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('MSFT')">
     <span>MSFT</span>
-    <span class="price" id="MSFTprice">$295.60</span>
-    <span class="change" id="MSFTchange">+0.5%</span>
+    <span class="price" id="MSFTprice">NA</span>
+    <span class="change" id="MSFTchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('TSLA')">
     <span>TSLA</span>
-    <span class="price" id="TSLAprice">$890.30</span>
-    <span class="change" id="TSLAchange">-1.1%</span>
+    <span class="price" id="TSLAprice">NA</span>
+    <span class="change" id="TSLAchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('NFLX')">
     <span>NFLX</span>
-    <span class="price" id="NFLXprice">$520.80</span>
-    <span class="change" id="NFLXchange">+1.8%</span>
+    <span class="price" id="NFLXprice">NA</span>
+    <span class="change" id="NFLXchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('META')">
     <span>FB</span>
-    <span class="price" id="METAprice">$339.80</span>
-    <span class="change" id="METAchange">-0.2%</span>
+    <span class="price" id="METAprice">NA</span>
+    <span class="change" id="METAchange">NA%</span>
   </div>
   <div class="stock-item" onclick="selectStock('NVDA')">
     <span>NVDA</span>
-    <span class="price" id="NVDAprice">$230.45</span>
-    <span class="change" id="NVDAchange">+2.0%</span>
+    <span class="price" id="NVDAprice">NA</span>
+    <span class="change" id="NVDAchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('BABA')">
     <span>BABA</span>
-    <span class="price" id="BABAprice">$188.50</span>
-    <span class="change" id="BABAchange">+1.1%</span>
+    <span class="price" id="BABAprice">NA</span>
+    <span class="change" id="BABAchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('V')">
     <span>V</span>
-    <span class="price" id="Vprice">$212.30</span>
-    <span class="change" id="Vchange">+0.7%</span>
+    <span class="price" id="Vprice">NA</span>
+    <span class="change" id="Vchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('MA')">
     <span>MA</span>
-    <span class="price" id="MAprice">$360.25</span>
-    <span class="change" id="MAchange">-0.4%</span>
+    <span class="price" id="MAprice">NA</span>
+    <span class="change" id="MAchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('DIS')">
     <span>DIS</span>
-    <span class="price" id="DISprice">$181.40</span>
-    <span class="change" id="DISchange">+1.5%</span>
+    <span class="price" id="DISprice">NA</span>
+    <span class="change" id="DISchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('ADBE')">
     <span>ADBE</span>
-    <span class="price" id="ADBEprice">$651.75</span>
-    <span class="change" id="ADBEchange">-0.6%</span>
+    <span class="price" id="ADBEprice">NA</span>
+    <span class="change" id="ADBEchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('PYPL')">
     <span>PYPL</span>
-    <span class="price" id="PYPLprice">$269.90</span>
-    <span class="change" id="PYPLchange">+1.3%</span>
+    <span class="price" id="PYPLprice">NA</span>
+    <span class="change" id="PYPLchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('INTC')">
     <span>INTC</span>
-    <span class="price" id="INTCprice">$53.20</span>
-    <span class="change" id="INTCchange">-0.8%</span>
+    <span class="price" id="INTCprice">NA</span>
+    <span class="change" id="INTCchange">NA</span>
   </div>
 </div>
     </div>
