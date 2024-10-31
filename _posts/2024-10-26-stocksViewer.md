@@ -247,58 +247,143 @@ title: Stocks Viewer
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
-    // JavaScript for interactivity
-    async function fetchStockData(ticker) {
-      const apiKey = '4LVWWBWLNGL62D5G'; // Replace with your Alpha Vantage API key
-      const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${apiKey}`;
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (data['Time Series (Daily)']) {
-        const stockData = data['Time Series (Daily)'];
-        const labels = Object.keys(stockData).reverse(); // Get dates
-        const prices = Object.values(stockData).map(day => day['4. close']).reverse(); // Get closing prices
-        console.log(prices);
-      } else {
-        console.error("Error fetching stock data:", data);
+    async function getStockData() {
+        const stockSymbol = document.getElementById("searchBar").value;
+        document.getElementById("output").textContent = ""; // Clear previous messages
+     try {
+        const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
+        const data = await response.json();
+        // Extract timestamps and prices
+        const timestamps = data?.chart?.result?.[0]?.timestamp;
+        const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
+        // Check if data exists
+        if (timestamps && prices) {
+                // Convert timestamps to readable dates
+                const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
+               displayChart(labels, prices, stockSymbol);
+            } else {
+                console.error(`Data not found for ${stockSymbol}. Response structure:`, data);
+                document.getElementById("output").textContent = `Data not found for ${stockSymbol}.`;
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+}
+function displayChart(labels, prices, tickerSymbol) {
+    const ctx = document.getElementById('stockChart').getContext('2d');
+    // Destroy the old chart if it exists
+    if (stockChart) {
+        stockChart.destroy();
+    }
+    // Create a gradient fill
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Start with purple (rgba)
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Fade to transparent
+    // Determine min and max values for the y-axis based on prices
+    const minPrice = Math.min(...prices) * 0.55; // 5% below the minimum price
+    const maxPrice = Math.max(...prices) * 1.05; // 5% above the maximum price
+    // Create a new chart
+    stockChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: tickerSymbol.toUpperCase(),
+                data: prices,
+                borderColor: '#001f3f', // Dark blue color for the line
+                borderWidth: 2,
+                fill: true,
+                backgroundColor: gradient,
+                spanGaps: true,
+                pointRadius: 0, // Remove dots
+                tension: 0.1 // Smooth the line
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false // Hide the legend
+                },
+                tooltip: {
+                    enabled: true, // Enable tooltips
+                    mode: 'index', // Tooltip for closest point
+                    intersect: false // Show tooltip when hovering close to the line
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: { display: true, text: 'Timestamp' },
+                    ticks: {
+                        callback: function(value) {
+                            // Format the timestamp to display only hours
+                            return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        }
+                    },
+                    grid: {
+                        display: false // Remove grid lines on x-axis
+                    }
+                },
+                y: {
+                    title: { display: true, text: 'Price (USD)' },
+                    grid: {
+                        display: false // Remove grid lines on y-axis
+                    }
+                }
+            }
+        }
+    });
+}
+async function getStockPrice(stock) {
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+            const data = await response.json();
+            console.log(data);
+            const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+            const outputElement = document.getElementById("output");
+            if (price !== undefined) {
+                //outputElement.textContent = `The price of ${stock} is: $${price}`;
+                return(price)
+            } else {
+                outputElement.textContent = `Price not found for ${stock}.`;
+                console.error(`Price not found for ${stock}. Response structure:`, data);
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(prices[symbol]);
+                }, 0); // Simulate network delay
+            }); 
       }
-    }
-
-    function selectStock(ticker) {
-      const stockName = {
-        'AAPL': { name: 'Apple Inc.', price: '$174.30', change: '+1.2%', metrics: { marketCap: '$2.8 Trillion', peRatio: '30.5', dividendYield: '0.60%', weekHigh: '$198.23', weekLow: '$124.17' } },
-        'GOOGL': { name: 'Alphabet Inc.', price: '$2812.50', change: '-0.3%', metrics: { marketCap: '$1.9 Trillion', peRatio: '28.4', dividendYield: '0%', weekHigh: '$2950.00', weekLow: '$2670.00' } },
-        'AMZN': { name: 'Amazon.com Inc.', price: '$3475.00', change: '+0.9%', metrics: { marketCap: '$1.75 Trillion', peRatio: '60.2', dividendYield: '0%', weekHigh: '$3675.00', weekLow: '$3150.00' } },
-        'MSFT': { name: 'Microsoft Corp.', price: '$295.60', change: '+0.5%', metrics: { marketCap: '$2.3 Trillion', peRatio: '34.6', dividendYield: '0.70%', weekHigh: '$305.00', weekLow: '$276.00' } },
-        'TSLA': { name: 'Tesla Inc.', price: '$890.30', change: '-1.1%', metrics: { marketCap: '$900 Billion', peRatio: '250.0', dividendYield: '0%', weekHigh: '$950.00', weekLow: '$800.00' } },
-        'NFLX': { name: 'Netflix Inc.', price: '$520.80', change: '+1.8%', metrics: { marketCap: '$230 Billion', peRatio: '60.1', dividendYield: '0%', weekHigh: '$550.00', weekLow: '$480.00' } },
-        'FB': { name: 'Meta Platforms Inc.', price: '$339.80', change: '-0.2%', metrics: { marketCap: '$950 Billion', peRatio: '22.4', dividendYield: '0%', weekHigh: '$370.00', weekLow: '$320.00' } },
-        'NVDA': { name: 'NVIDIA Corp.', price: '$230.45', change: '+2.0%', metrics: { marketCap: '$600 Billion', peRatio: '40.0', dividendYield: '0.20%', weekHigh: '$250.00', weekLow: '$200.00' } },
-      };
-
-      // Update the stock details
-      const selectedStock = stockName[ticker];
-      document.getElementById('stock-name').innerText = `${selectedStock.name} (${ticker})`;
-      document.getElementById('stock-price').innerText = selectedStock.price;
-      document.getElementById('stock-change').innerText = selectedStock.change;
-
-      document.querySelectorAll('.stock-item').forEach(item => item.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
-
-      // Update key metrics
-      const metrics = selectedStock.metrics;
-      document.querySelector('.metric:nth-child(1) span:nth-child(2)').innerText = metrics.marketCap;
-      document.querySelector('.metric:nth-child(2) span:nth-child(2)').innerText = metrics.peRatio;
-      document.querySelector('.metric:nth-child(3) span:nth-child(2)').innerText = metrics.dividendYield;
-      document.querySelector('.metric:nth-child(4) span:nth-child(2)').innerText = metrics.weekHigh;
-      document.querySelector('.metric:nth-child(5) span:nth-child(2)').innerText = metrics.weekLow;
-
-      // Fetch stock data
-      fetchStockData(ticker);
-    }
-
-    // Initialize with default stock
-    fetchStockData('AAPL');
+      document.addEventListener("DOMContentLoaded", () => {
+            updateStockPrices(); // Call the function after DOM is fully loaded
+        });
+async function updateStockPrices() {
+            const stockSymbols = ['Netflix', 'Tesla', 'Amazon', 'Adobe', 'Nvidia', 'Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
+            const tickerSymbols = ['NFLX', 'TSLA', 'AMZN', 'ADBE', 'NVDA', 'SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
+            const tickerPrices = [];
+            counter = 0; 
+            for (const stock of tickerSymbols) {
+                const price = await getStockPrice(stock);
+                tickerPrices.push(price)              
+                const priceElement = document.getElementById(stockSymbols[counter] + "Price");
+                if (priceElement) {
+                    priceElement.textContent = `$${price}`;
+                } else {
+                    console.error(`Element with ID ${stock + "Price"} not found.`);
+                }
+                counter++;                 
+                //console.log(price);
+                //console.log(tickerPrices);
+                //console.log(priceElement);
+                //console.log(counter);
+            }
+        }
   </script>
 
 </body>
