@@ -8,6 +8,7 @@ title: Stocks Home
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Market Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,13 +92,14 @@ title: Stocks Home
             margin: 20px 0;
         }
         .card {
-            padding: 20px;
+            padding: 0px;
             margin: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             flex: 1;
             text-align: center;
             color: #fff; /* Text color set to white */
+            padding-bottom: -40px;
         }
         .card-orange {
             background-color: #FF8C00; /* Orange color */
@@ -118,7 +120,7 @@ title: Stocks Home
         .chart-container {
             position: relative;
             background-color: #fff;
-            padding: 20px;
+            padding: 50px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 20px 0;
@@ -126,8 +128,9 @@ title: Stocks Home
             gap: 20px;
         }
         .chart {
-            height: 300px;
-            background-color: #f9f9f9;
+            height: 100%; /* Set height to 100% to fill the container */
+            width: 100%; /* Set height to 100% to fill the container */
+            background-color: #fff; /* Set the chart background to white */
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -147,6 +150,19 @@ title: Stocks Home
             border-radius: 4px;
             outline: none;
             font-size: 16px;
+        }
+        .search-button {
+            background-color: #ff8c00; /* Orange color */
+            color: #fff;
+            border: none;
+            border-radius: 0 4px 4px 0; /* Rounded corners on the right */
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .search-button:hover {
+            background-color: #e07b00; /* Darker orange on hover */
         }
         .add-chart-button, .remove-chart-button {
             position: absolute;
@@ -203,14 +219,17 @@ title: Stocks Home
                 </div>
             </div>
             <div class="search-container">
-               <input type="text" placeholder="Search...">
+               <input type="text" id = "searchBar" placeholder="Search...">
+               <button class="search-button" onclick="getStockData()">Search</button> <!-- Search button added -->
             </div>
             <div class="chart-container" id="chartContainer">
-                <button class="add-chart-button" onclick="addNewChart()">
-                +</button>
-                 <button class="remove-chart-button" onclick="removeNewChart()">-</button>
-                <div class="chart" id="chart1">[Graph Placeholder]</div>
+                <button class="add-chart-button" onclick="addNewChart()">+</button>
+                <button class="remove-chart-button" onclick="removeNewChart()">-</button>
+                <div class="chart" id="chart1">
+                    <canvas id="stockChart" width="450" height="400">[Graph Placeholder]</canvas>
+                </div>
             </div>
+<div id="output" style="color: red; padding-top: 10px;"></div>
         </div>
         <!-- Sidebar -->
         <div class="sidebar">
@@ -318,5 +337,96 @@ title: Stocks Home
             document.querySelector('.remove-chart-button').style.display = 'none';
         }
     }
+    async function getStockData() {
+
+        const stockSymbol = document.getElementById("searchBar").value;
+        //console.log("Ticker Symbol:", stockSymbol);
+
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
+            const data = await response.json();
+            console.log(data);
+
+            // Extract timestamps and prices
+            const timestamps = data?.chart?.result?.[0]?.timestamp;
+            const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
+
+            // Check if data exists
+            if (timestamps && prices) {
+                // Convert timestamps to readable dates
+                const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
+               displayChart(labels, prices, stockSymbol);
+            } else {
+                console.error(`Data not found for ${stockSymbol}. Response structure:`, data);
+                document.getElementById("output").textContent = `Data not found for ${stockSymbol}.`;
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+      }
+
+function displayChart(labels, data, stockSymbol) {
+    const ctx = document.getElementById('stockChart').getContext('2d');
+
+    // Create a gradient for the area under the line
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400); // Adjust the height as necessary
+    gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Start with purple (rgba)
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Fade to transparent
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: `Stock Price for ${stockSymbol}`,
+                data: data,
+                borderColor: '#001f3f', // Dark blue color for the line
+                backgroundColor: gradient, // Gradient background
+                fill: true, // Enable filling under the line
+                pointRadius: 0, // Remove dots
+                tension: 0.1 // Smooth the line
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allow chart to fill the container
+            plugins: {
+                legend: {
+                    display: false // Hide the legend
+                },
+                tooltip: {
+                    enabled: true, // Enable tooltips
+                    mode: 'index', // Tooltip for closest point
+                    intersect: false // Show tooltip when hovering close to the line
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Timestamp' },
+                    ticks: {
+                        callback: function(value) {
+                            // Format the timestamp to display only hours
+                            return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        }
+                    },
+                    grid: {
+                        display: false // Remove grid lines on x-axis
+                    }
+                },
+                y: {
+                    title: { display: true, text: 'Price (USD)' },
+                    grid: {
+                        display: false // Remove grid lines on y-axis
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+    
+
 </script>
 </html>
