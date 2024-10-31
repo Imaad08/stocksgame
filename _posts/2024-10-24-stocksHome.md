@@ -383,7 +383,7 @@ async function getStockPrice(stock) {
 return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(prices[symbol]);
-                }, 10000); // Simulate network delay
+                }, 0); // Simulate network delay
             }); 
       }
       document.addEventListener("DOMContentLoaded", () => {
