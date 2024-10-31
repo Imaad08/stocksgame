@@ -59,6 +59,7 @@ title: Stocks Viewer
       background-color: #ffffff;
       border-right: 1px solid #ddd;
       padding: 20px;
+      overflow-y:scroll
     }
     .sidebar h2 {
       font-size: 1.2em;
@@ -233,6 +234,96 @@ title: Stocks Viewer
     <span class="price" id="INTCprice">NA</span>
     <span class="change" id="INTCchange">NA</span>
   </div>
+  <div class="stock-item" onclick="selectStock('ORCL')">
+  <span>ORCL</span>
+  <span class="price" id="ORCLprice">NA</span>
+  <span class="change" id="ORCLchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('IBM')">
+  <span>IBM</span>
+  <span class="price" id="IBMprice">NA</span>
+  <span class="change" id="IBMchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('AMD')">
+  <span>AMD</span>
+  <span class="price" id="AMDprice">NA</span>
+  <span class="change" id="AMDchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('SQ')">
+  <span>SQ</span>
+  <span class="price" id="SQprice">NA</span>
+  <span class="change" id="SQchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('SHOP')">
+  <span>SHOP</span>
+  <span class="price" id="SHOPprice">NA</span>
+  <span class="change" id="SHOPchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('SPY')">
+  <span>SPY</span>
+  <span class="price" id="SPYprice">NA</span>
+  <span class="change" id="SPYchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('BA')">
+  <span>BA</span>
+  <span class="price" id="BAprice">NA</span>
+  <span class="change" id="BAchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('KO')">
+  <span>KO</span>
+  <span class="price" id="KOprice">NA</span>
+  <span class="change" id="KOchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('PEP')">
+  <span>PEP</span>
+  <span class="price" id="PEPprice">NA</span>
+  <span class="change" id="PEPchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('XOM')">
+  <span>XOM</span>
+  <span class="price" id="XOMprice">NA</span>
+  <span class="change" id="XOMchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('CVX')">
+  <span>CVX</span>
+  <span class="price" id="CVXprice">NA</span>
+  <span class="change" id="CVXchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('WMT')">
+  <span>WMT</span>
+  <span class="price" id="WMTprice">NA</span>
+  <span class="change" id="WMTchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('T')">
+  <span>T</span>
+  <span class="price" id="Tprice">NA</span>
+  <span class="change" id="Tchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('JNJ')">
+  <span>JNJ</span>
+  <span class="price" id="JNJprice">NA</span>
+  <span class="change" id="JNJchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('MRNA')">
+  <span>MRNA</span>
+  <span class="price" id="MRNAprice">NA</span>
+  <span class="change" id="MRNAchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('PFE')">
+  <span>PFE</span>
+  <span class="price" id="PFEprice">NA</span>
+  <span class="change" id="PFEchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('COST')">
+  <span>COST</span>
+  <span class="price" id="COSTprice">NA</span>
+  <span class="change" id="COSTchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('LULU')">
+  <span>LULU</span>
+  <span class="price" id="LULUprice">NA</span>
+  <span class="change" id="LULUchange">NA</span>
+</div>
 </div>
     </div>
     <!-- Main Content -->
