@@ -120,7 +120,7 @@ title: Stocks Home
         .chart-container {
             position: relative;
             background-color: #fff;
-            padding: 50px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 20px 0;
@@ -164,27 +164,6 @@ title: Stocks Home
         .search-button:hover {
             background-color: #e07b00; /* Darker orange on hover */
         }
-        .add-chart-button, .remove-chart-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff8c00;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .remove-chart-button {
-            right: 40px; /* Adjust position for minus button */
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -223,10 +202,8 @@ title: Stocks Home
                <button class="search-button" onclick="getStockData()">Search</button> <!-- Search button added -->
             </div>
             <div class="chart-container" id="chartContainer">
-                <button class="add-chart-button" onclick="addNewChart()">+</button>
-                <button class="remove-chart-button" onclick="removeNewChart()">-</button>
                 <div class="chart" id="chart1">
-                    <canvas id="stockChart" width="450" height="400">[Graph Placeholder]</canvas>
+                    <canvas id="stockChart" width="475" height="375">[Graph Placeholder]</canvas>
                 </div>
             </div>
 <div id="output" style="color: red; padding-top: 10px;"></div>
@@ -298,61 +275,22 @@ title: Stocks Home
 </body>
 
 <script>
-    function addNewChart() {
-        const chartContainer = document.getElementById('chartContainer');
-        const chart1 = document.getElementById('chart1');
+    let stockChart; // Declare stockChart globally
 
-        // Adjust the width of the original chart to 50%
-        chart1.style.flex = '0 0 50%';
+async function getStockData() {
+    const stockSymbol = document.getElementById("searchBar").value;
+    document.getElementById("output").textContent = ""; // Clear previous messages
 
-        // Create a new chart element
-        const newChart = document.createElement('div');
-        newChart.className = 'chart';
-        newChart.id = 'newChart';
-        newChart.innerText = '[New Graph Placeholder]';
+    try {
+        const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
+        const data = await response.json();
 
-        // Add the new chart to the chart container
-        chartContainer.appendChild(newChart);
+        // Extract timestamps and prices
+        const timestamps = data?.chart?.result?.[0]?.timestamp;
+        const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
 
-        // Update the add button to show remove button
-        document.querySelector('.add-chart-button').style.display = 'none';
-        const removeButton = document.querySelector('.remove-chart-button');
-        removeButton.style.display = 'block';
-    }
-
-    function removeNewChart() {
-        const chartContainer = document.getElementById('chartContainer');
-        const newChart = document.getElementById('newChart');
-        const chart1 = document.getElementById('chart1');
-
-        if (newChart) {
-            // Remove the new chart element
-            chartContainer.removeChild(newChart);
-
-            // Restore the original chart's width
-            chart1.style.flex = '1';
-
-            // Show the add button and hide the remove button
-            document.querySelector('.add-chart-button').style.display = 'block';
-            document.querySelector('.remove-chart-button').style.display = 'none';
-        }
-    }
-    async function getStockData() {
-
-        const stockSymbol = document.getElementById("searchBar").value;
-        //console.log("Ticker Symbol:", stockSymbol);
-
-        try {
-            const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
-            const data = await response.json();
-            console.log(data);
-
-            // Extract timestamps and prices
-            const timestamps = data?.chart?.result?.[0]?.timestamp;
-            const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
-
-            // Check if data exists
-            if (timestamps && prices) {
+        // Check if data exists
+        if (timestamps && prices) {
                 // Convert timestamps to readable dates
                 const labels = timestamps.map(ts => new Date(ts * 1000).toLocaleString());
                displayChart(labels, prices, stockSymbol);
@@ -364,33 +302,43 @@ title: Stocks Home
             console.error('Error fetching stock data:', error);
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
-      }
+}
 
-function displayChart(labels, data, stockSymbol) {
+function displayChart(labels, prices, tickerSymbol) {
     const ctx = document.getElementById('stockChart').getContext('2d');
 
-    // Create a gradient for the area under the line
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400); // Adjust the height as necessary
+    // Destroy the old chart if it exists
+    if (stockChart) {
+        stockChart.destroy();
+    }
+
+    // Create a gradient fill
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Start with purple (rgba)
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Fade to transparent
 
-    new Chart(ctx, {
+    // Determine min and max values for the y-axis based on prices
+    const minPrice = Math.min(...prices) * 0.55; // 5% below the minimum price
+    const maxPrice = Math.max(...prices) * 1.05; // 5% above the maximum price
+
+    // Create a new chart
+    stockChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: `Stock Price for ${stockSymbol}`,
-                data: data,
+                label: tickerSymbol.toUpperCase(),
+                data: prices,
                 borderColor: '#001f3f', // Dark blue color for the line
-                backgroundColor: gradient, // Gradient background
-                fill: true, // Enable filling under the line
+                borderWidth: 2,
+                fill: true,
+                backgroundColor: gradient,
+                spanGaps: true,
                 pointRadius: 0, // Remove dots
                 tension: 0.1 // Smooth the line
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false, // Allow chart to fill the container
             plugins: {
                 legend: {
                     display: false // Hide the legend
@@ -401,6 +349,8 @@ function displayChart(labels, data, stockSymbol) {
                     intersect: false // Show tooltip when hovering close to the line
                 }
             },
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     title: { display: true, text: 'Timestamp' },
@@ -425,8 +375,6 @@ function displayChart(labels, data, stockSymbol) {
     });
 }
 
-
-    
 
 </script>
 </html>
