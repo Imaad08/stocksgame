@@ -198,7 +198,7 @@ title: Stocks Home
                 </div>
             </div>
             <div class="search-container">
-               <input type="text" id = "searchBar" placeholder="Search...">
+               <input type="text" id="searchBar" placeholder="Search...">
                <button class="search-button" onclick="getStockData()">Search</button> <!-- Search button added -->
             </div>
             <div class="chart-container" id="chartContainer">
@@ -206,7 +206,7 @@ title: Stocks Home
                     <canvas id="stockChart" width="475" height="375">[Graph Placeholder]</canvas>
                 </div>
             </div>
-<div id="output" style="color: red; padding-top: 10px;"></div>
+            <div id="output" style="color: red; padding-top: 10px;"></div>
         </div>
         <!-- Sidebar -->
         <div class="sidebar">
@@ -220,23 +220,23 @@ title: Stocks Home
                     </tr>
                     <tr>
                         <td>Netflix</td>
-                        <td>$490,123</td>
+                        <td id="NetflixPrice">$4</td>
                     </tr>
                     <tr>
                         <td>Tesla</td>
-                        <td>$920,456</td>
+                        <td id="TeslaPrice">$920,456</td>
                     </tr>
                     <tr>
                         <td>Amazon</td>
-                        <td>$1,123,987</td>
+                        <td id="AmazonPrice">$1,123,987</td>
                     </tr>
                     <tr>
                         <td>Adobe</td>
-                        <td>$670,345</td>
+                        <td id="AdobePrice">$670,345</td>
                     </tr>
                     <tr>
                         <td>Nvidia</td>
-                        <td>$820,321</td>
+                        <td id="NvidiaPrice">$820,321</td>
                     </tr>
                 </table>
             </div>
@@ -249,39 +249,35 @@ title: Stocks Home
                     </tr>
                     <tr>
                         <td>Spotify</td>
-                        <td>$297,408</td>
+                        <td id="SpotifyPrice">$297,408</td>
                     </tr>
                     <tr>
                         <td>Apple</td>
-                        <td>$142,845</td>
+                        <td id="ApplePrice">$142,845</td>
                     </tr>
                     <tr>
                         <td>Google</td>
-                        <td>$273,402</td>
+                        <td id="GooglePrice">$2,823,894</td>
                     </tr>
                     <tr>
                         <td>Facebook</td>
-                        <td>$97,213</td>
+                        <td id="FacebookPrice">$208,123</td>
                     </tr>
                     <tr>
                         <td>Microsoft</td>
-                        <td>$342,981</td>
+                        <td id="MicrosoftPrice">$330,456</td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
-
-</body>
-
-<script>
+    <script>
     let stockChart; // Declare stockChart globally
+    async function getStockData() {
+        const stockSymbol = document.getElementById("searchBar").value;
+        document.getElementById("output").textContent = ""; // Clear previous messages
 
-async function getStockData() {
-    const stockSymbol = document.getElementById("searchBar").value;
-    document.getElementById("output").textContent = ""; // Clear previous messages
-
-    try {
+     try {
         const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
         const data = await response.json();
 
@@ -375,6 +371,66 @@ function displayChart(labels, prices, tickerSymbol) {
     });
 }
 
+async function getStockPrice(stock) {
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+            const data = await response.json();
 
-</script>
-</html>
+            console.log(data);
+
+            const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+
+            const outputElement = document.getElementById("output");
+
+            if (price !== undefined) {
+                //outputElement.textContent = `The price of ${stock} is: $${price}`;
+                return(price)
+            } else {
+                outputElement.textContent = `Price not found for ${stock}.`;
+                console.error(`Price not found for ${stock}. Response structure:`, data);
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+
+return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(prices[symbol]);
+                }, 10000); // Simulate network delay
+            });
+        
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+            updateStockPrices(); // Call the function after DOM is fully loaded
+        });
+
+
+async function updateStockPrices() {
+            const stockSymbols = ['Netflix', 'Tesla', 'Amazon', 'Adobe', 'Nvidia', 'Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
+            const tickerSymbols = ['NFLX', 'TSLA', 'AMZN', 'ADBE', 'NVDA', 'SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
+            const tickerPrices = [];
+            counter = 0; 
+
+
+            for (const stock of tickerSymbols) {
+                const price = await getStockPrice(stock);
+                tickerPrices.push(price)
+                
+                const priceElement = document.getElementById(stockSymbols[counter] + "Price");
+
+                if (priceElement) {
+                    priceElement.textContent = `$${price}`;
+                } else {
+                    console.error(`Element with ID ${stock + "Price"} not found.`);
+                }
+
+                counter++; 
+                
+                console.log(price);
+                console.log(tickerPrices);
+                console.log(priceElement);
+                console.log(counter);
+            }
+        }

@@ -16,13 +16,9 @@ title: Stocks Login
         try {
             const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
             const data = await response.json();
-
             console.log(data);
-
             const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-
             const outputElement = document.getElementById("output");
-
             if (price !== undefined) {
                 outputElement.textContent = `The price of ${stockSymbol} is: $${price}`;
             } else {
@@ -34,7 +30,6 @@ title: Stocks Login
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
       }
-
       getStockPrice("AAPL");
     </script>
 
