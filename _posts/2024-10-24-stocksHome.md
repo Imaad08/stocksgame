@@ -276,15 +276,12 @@ title: Stocks Home
     async function getStockData() {
         const stockSymbol = document.getElementById("searchBar").value;
         document.getElementById("output").textContent = ""; // Clear previous messages
-
      try {
         const response = await fetch(`http://localhost:8085/api/stocks/${stockSymbol}`);
         const data = await response.json();
-
         // Extract timestamps and prices
         const timestamps = data?.chart?.result?.[0]?.timestamp;
         const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
-
         // Check if data exists
         if (timestamps && prices) {
                 // Convert timestamps to readable dates
@@ -299,24 +296,19 @@ title: Stocks Home
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
 }
-
 function displayChart(labels, prices, tickerSymbol) {
     const ctx = document.getElementById('stockChart').getContext('2d');
-
     // Destroy the old chart if it exists
     if (stockChart) {
         stockChart.destroy();
     }
-
     // Create a gradient fill
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(106, 13, 173, 0.6)'); // Start with purple (rgba)
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)'); // Fade to transparent
-
     // Determine min and max values for the y-axis based on prices
     const minPrice = Math.min(...prices) * 0.55; // 5% below the minimum price
     const maxPrice = Math.max(...prices) * 1.05; // 5% above the maximum price
-
     // Create a new chart
     stockChart = new Chart(ctx, {
         type: 'line',
@@ -370,18 +362,13 @@ function displayChart(labels, prices, tickerSymbol) {
         }
     });
 }
-
 async function getStockPrice(stock) {
         try {
             const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
             const data = await response.json();
-
             console.log(data);
-
             const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-
             const outputElement = document.getElementById("output");
-
             if (price !== undefined) {
                 //outputElement.textContent = `The price of ${stock} is: $${price}`;
                 return(price)
@@ -393,44 +380,33 @@ async function getStockPrice(stock) {
             console.error('Error fetching stock data:', error);
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
-
 return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(prices[symbol]);
                 }, 10000); // Simulate network delay
-            });
-        
+            }); 
       }
-
       document.addEventListener("DOMContentLoaded", () => {
             updateStockPrices(); // Call the function after DOM is fully loaded
         });
-
-
 async function updateStockPrices() {
             const stockSymbols = ['Netflix', 'Tesla', 'Amazon', 'Adobe', 'Nvidia', 'Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
             const tickerSymbols = ['NFLX', 'TSLA', 'AMZN', 'ADBE', 'NVDA', 'SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
             const tickerPrices = [];
             counter = 0; 
-
-
             for (const stock of tickerSymbols) {
                 const price = await getStockPrice(stock);
-                tickerPrices.push(price)
-                
+                tickerPrices.push(price)              
                 const priceElement = document.getElementById(stockSymbols[counter] + "Price");
-
                 if (priceElement) {
                     priceElement.textContent = `$${price}`;
                 } else {
                     console.error(`Element with ID ${stock + "Price"} not found.`);
                 }
-
-                counter++; 
-                
-                console.log(price);
-                console.log(tickerPrices);
-                console.log(priceElement);
-                console.log(counter);
+                counter++;                 
+                //console.log(price);
+                //console.log(tickerPrices);
+                //console.log(priceElement);
+                //console.log(counter);
             }
         }
