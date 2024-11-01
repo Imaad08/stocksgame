@@ -192,7 +192,7 @@ title: Stocks Viewer
   <div class="stock-item" onclick="selectStock('META')">
     <span>FB</span>
     <span class="price" id="METAprice">NA</span>
-    <span class="change" id="METAchange">NA%</span>
+    <span class="change" id="METAchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('NVDA')">
     <span>NVDA</span>
@@ -209,6 +209,16 @@ title: Stocks Viewer
     <span class="price" id="Vprice">NA</span>
     <span class="change" id="Vchange">NA</span>
   </div>
+  <div class="stock-item" onclick="selectStock('IRTC')">
+  <span>IRTC</span>
+  <span class="price" id="IRTCprice">NA</span>
+  <span class="change" id="IRTCchange">NA</span>
+</div>
+<div class="stock-item" onclick="selectStock('HOLX')">
+  <span>HOLX</span>
+  <span class="price" id="HOLXprice">NA</span>
+  <span class="change" id="HOLXchange">NA</span>
+</div>
   <div class="stock-item" onclick="selectStock('MA')">
     <span>MA</span>
     <span class="price" id="MAprice">NA</span>
@@ -583,7 +593,7 @@ function initializeStockSelection() {
 
 async function updateStockPrices() {
   const tickerSymbols = [
-  'AAPL', 'GOOG', 'AMZN', 'MSFT', 'TSLA', 'NFLX', 'META', 'NVDA', 'BABA', 'V', 'MA', 'DIS', 'ADBE', 'PYPL', 'INTC'];
+  'AAPL', 'GOOG', 'AMZN', 'MSFT', 'TSLA', 'NFLX', 'META', 'NVDA', 'BABA', 'V', 'IRTC', 'HOLX', 'MA', 'DIS', 'ADBE', 'PYPL', 'INTC', 'ORCL', 'IBM', 'AMD', 'SQ', 'SHOP', 'SPY', 'BA', 'KO', 'PEP', 'XOM', 'CVX', 'WMT', 'T', 'JNJ', 'MRNA', 'PFE', 'COST', 'LULU'];
   const tickerPrices = [];
   let counter = 0;
 
