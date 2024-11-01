@@ -173,7 +173,7 @@ title: Stocks Home
         <div class="nav-buttons">
             <a href="{{site.baseurl}}/stocks/home">Home</a>
             <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
-            <a href="#">Portfolio</a>
+            <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
             <a href="#">Upgrades</a> <!-- Added "Upgrades" button -->
             <a href="#">Profile</a>
         </div>

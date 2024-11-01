@@ -147,7 +147,7 @@ title: Stocks Viewer
     <div class="nav-buttons">
       <a href="{{site.baseurl}}/stocks/home">Home</a>
       <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
-      <a href="#">Portfolio</a>
+      <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
       <a href="#">Upgrades</a>
       <a href="#">Profile</a>
     </div>
@@ -587,6 +587,7 @@ return new Promise((resolve) => {
             updateStockPrices(); // Call the function after DOM is fully loaded
             initializeStockSelection();
         });
+        
 function initializeStockSelection() {
     selectStock('AAPL'); // Automatically selects and loads data for Apple
 }
