@@ -401,7 +401,7 @@ async function selectStock(stock) {
         const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
         const data = await response.json();
 
-        const stockName = data?.chart?.result?.[0]?.meta?.symbol;
+        const stockName = data?.chart?.result?.[0]?.meta?.longName;
         const stockPrice = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
         const percentChange = await getPercentChange(stock);
 
