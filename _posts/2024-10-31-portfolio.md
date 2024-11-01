@@ -151,7 +151,21 @@ title: Stocks Home
                         <th>Upgrades</th>
                         <th>Buy</th>
                         <th>Sell</th>
-                    </tr>
+ <!-- Portfolio Stocks Table
+                        <th>Stock</th>
+                        <th>Number of Shares</th>
+                        <th>Purchase Date</th>
+                        <th>Purchase Price</th>
+                        <th>Current Price</th>
+                        <th>Dollar Gain from Purchase Price</th>
+                        <th>Percent Gain from Purchase Price</th>
+                        <th>Dollar Gain from Day</th>
+                        <th>Percent Gain from Day</th>
+                        <th>Upgrades</th>
+                        <th>Buy</th>
+                        <th>Sell</th>
+                    -->
+                    </tr>   
                     <tr>
                         <td>Apple</td>
                         <td id="AAPLPrice">$142</td>
