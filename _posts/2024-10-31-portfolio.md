@@ -326,9 +326,29 @@ title: Stocks Home
                 }, 0); // Simulate network delay
             }); 
       }
+        async function getUserStock(user) {
+        try {
+            const response = await fetch(`http://localhost:8085/user/getStocks?username=${user}`);
+            const data = await response.json();
+            console.log(data);
+            //const outputElement = document.getElementById("output");
+            if (data !== undefined) {
+                //outputElement.textContent = `The price of ${stock} is: $${price}`;
+                //console.log(`The price of ${stock} is: $${price}`);
+                return(data)
+            } else {
+                outputElement.textContent = `Price not found for ${stock}.`;
+                console.error(`Price not found for ${stock}. Response structure:`, data);
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+      }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
             createPortfolioChart();
+            getUserStock("testUser4");
         });
     </script>
 </body>
