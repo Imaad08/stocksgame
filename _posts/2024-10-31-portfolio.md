@@ -241,30 +241,42 @@ title: Stocks Portfolio
                 }, 0); // Simulate network delay
             }); 
       }
-        function createPortfolioChart() {
-            const ctx = document.getElementById("portfolioChart").getContext("2d");
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: ["Apple", "Microsoft", "Netflix", "Amazon"],
-                    datasets: [{
-                        label: "Portfolio Distribution",
-                        data: [7100, 9900, 3900, 3200],
-                        backgroundColor: ["#FF8C00", "#6A0DAD", "#001f3f", "#FF8C00"],
-                        borderColor: "#001f3f",
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+    async function createPortfolioChart() {
+        const userStocks = await getUserStock("testUser4");
+        const labels = [];
+        const dataValues = [];
+        const backgroundColors = ["#FF8C00", "#6A0DAD", "#001f3f", "#FF8C00"]; // Define colors for each stock
+        for (const stockInfo of userStocks) {
+            const { stockSymbol, quantity } = stockInfo;
+            const price = await getStockPrice(stockSymbol);
+            const totalValue = price * quantity;
+            // Push symbol and calculated total value to arrays
+            labels.push(stockSymbol);
+            dataValues.push(totalValue);
+        }
+        const ctx = document.getElementById("portfolioChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Portfolio Distribution",
+                    data: dataValues,
+                    backgroundColor: backgroundColors.slice(0, labels.length),
+                    borderColor: "#001f3f",
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-        }
+            }
+        });
+    }
         async function getStockTotal(stock, quantity) {
             try {
                 const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
