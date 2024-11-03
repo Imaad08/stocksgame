@@ -1,7 +1,7 @@
 ---
 layout: none
 permalink: /stocks/portfolio
-title: Stocks Home
+title: Stocks Portfolio
 ---
 
 <html lang="en">
@@ -141,7 +141,7 @@ title: Stocks Home
             <!-- Portfolio Stocks Table -->
             <div class="portfolio-stocks">
                 <h3>Your Stocks</h3>
-                <table>
+                <table id="portfolioTable">
                     <tr>
                         <th>Stock</th>
                         <th>Price</th>
@@ -151,42 +151,7 @@ title: Stocks Home
                         <th>Upgrades</th>
                         <th>Buy</th>
                         <th>Sell</th>
- <!-- Portfolio Stocks Table
-                        <th>Stock</th>
-                        <th>Number of Shares</th>
-                        <th>Purchase Date</th>
-                        <th>Purchase Price</th>
-                        <th>Current Price</th>
-                        <th>Dollar Gain from Purchase Price</th>
-                        <th>Percent Gain from Purchase Price</th>
-                        <th>Dollar Gain from Day</th>
-                        <th>Percent Gain from Day</th>
-                        <th>Upgrades</th>
-                        <th>Buy</th>
-                        <th>Sell</th>
-                    -->
-                    </tr>   
-                    <tr>
-                        <td>Apple</td>
-                        <td id="AAPLPrice">$142</td>
-                        <td id="AAPLStock">50</td>
-                        <td id="AAPLTotal">$7,100</td>
-                        <td id="AAPLChange">-0.13%</td>
-                        <th></th>
-                        <th>Buy</th>
-                        <th>Sell</th>
                     </tr>
-                    <tr>
-                        <td>Microsoft</td>
-                        <td id="MSFTPrice">$330</td>
-                        <td id="MSFTStock">50</td>
-                        <td id="MSFTTotal">$9,900</td>
-                        <td id="MSFTChange">-27%</td>
-                        <th></th>
-                        <th>Buy</th>
-                        <th>Sell</th>
-                    </tr>
-                    <!-- More stocks can be added here -->
                 </table>
             </div>
             <!-- Chart Container -->
@@ -242,11 +207,11 @@ title: Stocks Home
                 const priceElement = document.getElementById(stock + "Price");
                 const percentChange = await getPercentChange(stock);
                 const percentChangeElement = document.getElementById(stock + "Change");
-                const stockTotal = await getStockTotal(stock);
+                //const stockTotal = await getStockTotal(stock);
                 const stockTotalElement = document.getElementById(stock + "Total");
                 if (priceElement) priceElement.textContent = `$${price}`;
                 if (percentChangeElement) percentChangeElement.textContent = `${percentChange}%`;
-                if (stockTotalElement) stockTotalElement.textContent = `$${stockTotal}`;
+                //if (stockTotalElement) stockTotalElement.textContent = `$${stockTotal}`;
             }
         }
         async function getPercentChange(stock) {
@@ -299,56 +264,57 @@ title: Stocks Home
                 }
             });
         }
-        async function getStockTotal(stock) {
-        try {
-            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
-            const data = await response.json();
-            console.log(data);
-            const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
-            const stockNumber = 50;   //THIS NEEDS TO BE CHANGED FOR THE NUMBER OF STOCKS *****
-            const totalValue = price * stockNumber;
-            //const outputElement = document.getElementById("output");
-            if (totalValue !== undefined) {
-                //outputElement.textContent = `The price of ${stock} is: $${price}`;
-                console.log(totalValue.toFixed(2));
-                return totalValue.toFixed(2);
-            } else {
-                outputElement.textContent = `Price not found for ${stock}.`;
-                console.error(`Price not found for ${stock}. Response structure:`, data);
+        async function getStockTotal(stock, quantity) {
+            try {
+                const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+                const data = await response.json();
+                const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+                const totalValue = price * quantity;
+                return totalValue ? totalValue.toFixed(2) : "N/A";
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+                return "N/A";
             }
-        } catch (error) {
-            console.error('Error fetching stock data:', error);
-            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
-        return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(prices[symbol]);
-                }, 0); // Simulate network delay
-            }); 
-      }
         async function getUserStock(user) {
-        try {
-            const response = await fetch(`http://localhost:8085/user/getStocks?username=${user}`);
-            const data = await response.json();
-            console.log(data);
-            //const outputElement = document.getElementById("output");
-            if (data !== undefined) {
-                //outputElement.textContent = `The price of ${stock} is: $${price}`;
-                //console.log(`The price of ${stock} is: $${price}`);
-                return(data)
-            } else {
-                outputElement.textContent = `Price not found for ${stock}.`;
-                console.error(`Price not found for ${stock}. Response structure:`, data);
+            try {
+                const response = await fetch(`http://localhost:8085/user/getStocks?username=${user}`);
+                const stocksData = await response.json();
+                return stocksData;
+            } catch (error) {
+                console.error("Error fetching user stocks:", error);
+                return [];
             }
-        } catch (error) {
-            console.error('Error fetching stock data:', error);
-            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
-      }
+        async function populatePortfolioTable() {
+            const userStocks = await getUserStock("testUser4");
+            const portfolioTable = document.getElementById("portfolioTable");
+            for (const stockInfo of userStocks) {
+                const { stockSymbol, quantity } = stockInfo;
+                // Fetch dynamic stock data
+                const price = await getStockPrice(stockSymbol);
+                const percentChange = await getPercentChange(stockSymbol);
+                const totalValue = await getStockTotal(stockSymbol, quantity);
+                // Create a new row for the stock
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${stockSymbol}</td>
+                    <td id="${stockSymbol}Price">$${price}</td>
+                    <td>${quantity}</td>
+                    <td id="${stockSymbol}Total">$${totalValue}</td>
+                    <td id="${stockSymbol}Change">${percentChange}%</td>
+                    <td>Upgrades</td>
+                    <td>Buy</td>
+                    <td>Sell</td>
+                `;
+                // Append the row to the table
+                portfolioTable.appendChild(row);
+            }
+        }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
+            populatePortfolioTable();
             createPortfolioChart();
-            getUserStock("testUser4");
         });
     </script>
 </body>
