@@ -173,7 +173,7 @@ title: Stocks Viewer
   <div class="stock-item" onclick="selectStock('AMZN')">
     <span>AMZN</span>
     <span class="price" id="AMZNprice">NA</span>
-    <span class="change" id="AMZNchange">+NA</span>
+    <span class="change" id="AMZNchange">NA</span>
   </div>
   <div class="stock-item" onclick="selectStock('MSFT')">
     <span>MSFT</span>
