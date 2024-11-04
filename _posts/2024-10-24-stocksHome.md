@@ -3,6 +3,7 @@ layout: none
 permalink: /stocks/home
 title: Stocks Home
 ---
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -66,7 +67,7 @@ title: Stocks Home
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .your-stocks, .stock-table {
-            height: 300px; /* Height for tables */
+            height: full; /* Height for tables */
         }
         .stock-table table, .your-stocks table {
             width: 100%;
@@ -175,7 +176,7 @@ title: Stocks Home
             <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
             <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
             <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-            <a href="#">Upgrades</a> <!-- Added "Upgrades" button -->
+            <a href="#">Upgrades</a>
             <a href="#">Profile</a>
         </div>
     </nav>
@@ -200,7 +201,7 @@ title: Stocks Home
             </div>
             <div class="search-container">
                <input type="text" id="searchBar" placeholder="Search...">
-               <button class="search-button" onclick="getStockData()">Search</button> <!-- Search button added -->
+               <button class="search-button" onclick="getStockData()">Search</button>
             </div>
             <div class="chart-container" id="chartContainer">
                 <div class="chart" id="chart1">
@@ -211,33 +212,12 @@ title: Stocks Home
         </div>
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- "Your Stocks" section with table -->
             <div class="your-stocks">
                 <h3>Your Stocks</h3>
-                <table>
+                <table id="yourStocksTable">
                     <tr>
                         <th>Stock</th>
                         <th>Price</th>
-                    </tr>
-                    <tr>
-                        <td>Netflix</td>
-                        <td id="NetflixPrice">$4</td>
-                    </tr>
-                    <tr>
-                        <td>Tesla</td>
-                        <td id="TeslaPrice">$920,456</td>
-                    </tr>
-                    <tr>
-                        <td>Amazon</td>
-                        <td id="AmazonPrice">$1,123,987</td>
-                    </tr>
-                    <tr>
-                        <td>Adobe</td>
-                        <td id="AdobePrice">$670,345</td>
-                    </tr>
-                    <tr>
-                        <td>Nvidia</td>
-                        <td id="NvidiaPrice">$820,321</td>
                     </tr>
                 </table>
             </div>
@@ -273,6 +253,49 @@ title: Stocks Home
         </div>
     </div>
     <script>
+    async function getUserStocks() {
+        try {
+            const response = await fetch(`http://localhost:8085/user/getStocks?username=testUser4`);
+            return await response.json();
+        } catch (error) {
+            console.error("Error fetching user stocks:", error);
+            return [];
+        }
+    }
+    async function updateYourStocksTable() {
+        const userStocks = await getUserStocks();
+        const table = document.getElementById("yourStocksTable");
+        // Clear any existing rows (excluding header)
+        table.innerHTML = `
+            <tr>
+                <th>Stock</th>
+                <th>Price</th>
+            </tr>`;
+        // Populate the table with each user's stock and price
+        for (const stockInfo of userStocks) {
+            const { stockSymbol } = stockInfo;
+            const price = await getStockPrice(stockSymbol);
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${stockSymbol}</td>
+                <td id="${stockSymbol}Price">$${price}</td>
+            `;
+            table.appendChild(row);
+        }
+    }
+    async function getStockPrice(stock) {
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+            const data = await response.json();
+            return data?.chart?.result?.[0]?.meta?.regularMarketPrice ?? "N/A";
+        } catch (error) {
+            console.error("Error fetching stock price:", error);
+            return "N/A";
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        updateYourStocksTable();
+    });
     let stockChart; // Declare stockChart globally
     async function getStockData() {
         const stockSymbol = document.getElementById("searchBar").value;
@@ -391,8 +414,8 @@ return new Promise((resolve) => {
             updateStockPrices(); // Call the function after DOM is fully loaded
         });
 async function updateStockPrices() {
-            const stockSymbols = ['Netflix', 'Tesla', 'Amazon', 'Adobe', 'Nvidia', 'Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
-            const tickerSymbols = ['NFLX', 'TSLA', 'AMZN', 'ADBE', 'NVDA', 'SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
+            const stockSymbols = ['Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
+            const tickerSymbols = ['SPOT', 'AAPL', 'GOOG', 'META', 'MSFT'];
             const tickerPrices = [];
             counter = 0; 
             for (const stock of tickerSymbols) {
