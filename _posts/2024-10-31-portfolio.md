@@ -127,11 +127,11 @@ title: Stocks Portfolio
                 <div class="summary-cards">
                     <div class="card card-orange">
                         <h3>Today's Gain</h3>
-                        <p>$3,400</p>
+                        <p id="totalGain">NA</p>
                     </div>
                     <div class="card card-purple">
                         <h3>Today's Growth</h3>
-                        <p>15%</p>
+                        <p id="percentIncrease">NA</p>
                     </div>
                     <div class="card card-darkblue">
                         <h3>Overall Value</h3>
@@ -364,6 +364,10 @@ title: Stocks Portfolio
             // Calculate percent increase
             const percentIncrease = ((totalLatestValue - totalOldValue) / totalOldValue) * 100;
             console.log(`total increase: $${totalGain.toFixed(2)}, percent increase: ${percentIncrease.toFixed(2)}%`);
+            const totalElement = document.getElementById("totalGain");
+            const percentElement = document.getElementById("percentIncrease");
+            totalElement.textContent = `$${totalGain.toFixed(2)}`;
+            percentElement.textContent = `${percentIncrease.toFixed(2)}%`;
         }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
