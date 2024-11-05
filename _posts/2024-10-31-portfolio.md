@@ -65,26 +65,34 @@ title: Stocks Portfolio
         }
         .summary-cards {
             display: flex;
-            gap: 20px;
-            justify-content: space-around;
+            justify-content: space-between;
+            margin: 20px 0;
         }
         .card {
+            padding: 0px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             flex: 1;
             text-align: center;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            color: #fff; /* Text color set to white */
+            padding-bottom: -40px;
         }
         .card-orange {
-            background-color: #FF8C00;
+            background-color: #FF8C00; /* Orange color */
         }
         .card-purple {
-            background-color: #6A0DAD;
+            background-color: #6A0DAD; /* Purple color */
         }
         .card-darkblue {
-            background-color: #001f3f;
+            background-color: #001f3f; /* Dark blue color */
+        }
+        .card h2 {
+            font-size: 20px;
+        }
+        .card p {
+            font-size: 36px;
+            font-weight: bold;
         }
         .portfolio-stocks table, .watchlist table {
             width: 100%;
@@ -126,13 +134,13 @@ title: Stocks Portfolio
                 <h2>Portfolio Overview</h2>
                 <div class="summary-cards">
                     <div class="card card-orange">
-                        <h3>Today's Gain</h3>
-                        <p id="totalGain">NA</p>
-                    </div>
-                    <div class="card card-purple">
-                        <h3>Today's Growth</h3>
-                        <p id="percentIncrease">NA</p>
-                    </div>
+                    <h3>Today's Dollar Change</h3>
+                    <p id="totalGain">NA</p>
+                </div>
+                <div class="card card-purple">
+                    <h3>Today's Percent Change</h3>
+                    <p id="percentIncrease">NA</p>
+                </div>
                     <div class="card card-darkblue">
                         <h3>Overall Value</h3>
                         <p>$50,000</p>

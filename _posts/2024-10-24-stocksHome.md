@@ -187,11 +187,11 @@ title: Stocks Home
             <p>Invest your money with small risk!</p>
             <div class="summary-cards">
                 <div class="card card-orange">
-                    <h2>Today's Return</h2>
+                    <h2>Today's Dollar Change</h2>
                     <p id="totalGain">NA</p>
                 </div>
                 <div class="card card-purple">
-                    <h2>Total Return</h2>
+                    <h2>Today's Percent Change</h2>
                     <p id="percentIncrease">NA</p>
                 </div>
                 <div class="card card-darkblue">
