@@ -201,6 +201,26 @@ title: Stocks Portfolio
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
       }
+      async function getOldStockPrice(stock) {
+        try {
+            const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
+            const data = await response.json();
+            console.log(data);
+            const oldPrice = data?.chart?.result?.[0]?.meta?.chartPreviousClose;
+            const outputElement = document.getElementById("output");
+            if (oldPrice !== undefined) {
+                //outputElement.textContent = `The price of ${stock} is: $${price}`;
+                 console.log(`The previous close price of ${stock} is: $${oldPrice}`);
+                return(oldPrice)
+            } else {
+                outputElement.textContent = `Price not found for ${stock}.`;
+                console.error(`Price not found for ${stock}. Response structure:`, data);
+            }
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+            document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
+        }
+      }
         async function updatePrices() {
             const stocks = ["AAPL", "MSFT"]; // //THIS NEEDS TO BE CHANGED FOR THE STOCKS INVESTED IN *****
             for (let stock of stocks) {
@@ -293,6 +313,7 @@ title: Stocks Portfolio
             try {
                 const response = await fetch(`http://localhost:8085/user/getStocks?username=${user}`);
                 const stocksData = await response.json();
+                console.log(stocksData);
                 return stocksData;
             } catch (error) {
                 console.error("Error fetching user stocks:", error);
@@ -324,10 +345,31 @@ title: Stocks Portfolio
                 portfolioTable.appendChild(row);
             }
         }
+        async function getPortfolioPerformance(user) {
+            // Fetch user's stocks and quantities
+            const userStocks = await getUserStock(user);
+            let totalGain = 0;
+            let totalLatestValue = 0;
+            let totalOldValue = 0;
+            for (const { stockSymbol, quantity } of userStocks) {
+                const latestPrice = await getStockPrice(stockSymbol);
+                const oldPrice = await getOldStockPrice(stockSymbol);
+                // Calculate gain for each stock
+                const stockGain = (latestPrice - oldPrice) * quantity;
+                totalGain += stockGain;
+                // Calculate total values for percent increase calculation
+                totalLatestValue += latestPrice * quantity;
+                totalOldValue += oldPrice * quantity;
+            }
+            // Calculate percent increase
+            const percentIncrease = ((totalLatestValue - totalOldValue) / totalOldValue) * 100;
+            console.log(`total increase: $${totalGain.toFixed(2)}, percent increase: ${percentIncrease.toFixed(2)}%`);
+        }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
             populatePortfolioTable();
             createPortfolioChart();
+            getPortfolioPerformance("testUser4");
         });
     </script>
 </body>
