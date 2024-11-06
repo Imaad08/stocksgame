@@ -196,7 +196,7 @@ title: Stocks Home
                 </div>
                 <div class="card card-darkblue">
                     <h2>Revenue Return</h2>
-                    <p id="portfolioValue">$52,345</p>
+                    <p id="portfolioValue">NA</p>
                 </div>
             </div>
             <div class="search-container">

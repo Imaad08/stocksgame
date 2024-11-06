@@ -143,7 +143,7 @@ title: Stocks Portfolio
                 </div>
                     <div class="card card-darkblue">
                         <h3>Overall Value</h3>
-                        <p id="portfolioValue">$50,000</p>
+                        <p id="portfolioValue">NA</p>
                     </div>
                 </div>
             </div>
