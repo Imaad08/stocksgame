@@ -183,7 +183,7 @@ title: Stocks Home
     <!-- Dashboard Content -->
     <div class="dashboard">
         <div class="dashboard-content">
-            <h1 class="welcome">Hi Rafael, Welcome Back</h1>
+            <h1 id="userIDName" class="welcome">Hi Rafael, Welcome Back</h1>
             <p>Invest your money with small risk!</p>
             <div class="summary-cards">
                 <div class="card card-orange">
@@ -196,7 +196,7 @@ title: Stocks Home
                 </div>
                 <div class="card card-darkblue">
                     <h2>Revenue Return</h2>
-                    <p>$52,345</p>
+                    <p id="portfolioValue">$52,345</p>
                 </div>
             </div>
             <div class="search-container">
@@ -257,6 +257,8 @@ title: Stocks Home
     var variable = localStorage.getItem('name')
     console.log(variable);
     var userID = localStorage.getItem('userID')
+    const userIDElement = document.getElementById("userIDName");
+    userIDElement.textContent = `Hi ${userID}, Welcome Back`;
     console.log(userID);
     async function getUserStocks() {
         try {
@@ -444,6 +446,7 @@ async function updateStockPrices() {
 async function getPortfolioPerformance(user) {
             // Fetch user's stocks and quantities
             const userStocks = await getUserStock(user);
+            const userValue = await getUserValue(user);
             let totalGain = 0;
             let totalLatestValue = 0;
             let totalOldValue = 0;
@@ -462,8 +465,10 @@ async function getPortfolioPerformance(user) {
             console.log(`total increase: $${totalGain.toFixed(2)}, percent increase: ${percentIncrease.toFixed(2)}%`);
             const totalElement = document.getElementById("totalGain");
             const percentElement = document.getElementById("percentIncrease");
+            const valueElement = document.getElementById("portfolioValue");
             totalElement.textContent = `$${totalGain.toFixed(2)}`;
             percentElement.textContent = `${percentIncrease.toFixed(2)}%`;
+            valueElement.textContent = `$${userValue.toFixed(2)}`;
         }
 async function getUserStock(user) {
             try {
@@ -496,3 +501,14 @@ async function getOldStockPrice(stock) {
             document.getElementById("output").textContent = "Error fetching stock data. Please try again later.";
         }
       }
+async function getUserValue(user) {
+            try {
+                const response = await fetch(`http://localhost:8085/user/portfolioValue?username=${user}`);
+                const stocksData = await response.json();
+                console.log(stocksData);
+                return stocksData;
+            } catch (error) {
+                console.error("Error fetching user stocks:", error);
+                return [];
+            }
+        }
