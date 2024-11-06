@@ -122,7 +122,6 @@ title: Stocks Portfolio
       <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
       <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
       <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-      <a href="#">Upgrades</a>
       <a href="#">Profile</a>
         </div>
     </nav>
@@ -157,9 +156,6 @@ title: Stocks Portfolio
                         <th># of Shares</th>
                         <th>Total Value</th>
                         <th>% Change</th>
-                        <th>Upgrades</th>
-                        <th>Buy</th>
-                        <th>Sell</th>
                     </tr>
                 </table>
             </div>
@@ -347,9 +343,6 @@ title: Stocks Portfolio
                     <td>${quantity}</td>
                     <td id="${stockSymbol}Total">$${totalValue}</td>
                     <td id="${stockSymbol}Change">${percentChange}%</td>
-                    <td>Upgrades</td>
-                    <td>Buy</td>
-                    <td>Sell</td>
                 `;
                 // Append the row to the table
                 portfolioTable.appendChild(row);

@@ -149,7 +149,6 @@ title: Stocks Viewer
       <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
       <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
       <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-      <a href="#">Upgrades</a>
       <a href="#">Profile</a>
     </div>
   </nav>
