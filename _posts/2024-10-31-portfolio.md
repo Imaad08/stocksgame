@@ -143,7 +143,7 @@ title: Stocks Portfolio
                 </div>
                     <div class="card card-darkblue">
                         <h3>Overall Value</h3>
-                        <p>$50,000</p>
+                        <p id="portfolioValue">$50,000</p>
                     </div>
                 </div>
             </div>
@@ -358,6 +358,7 @@ title: Stocks Portfolio
         async function getPortfolioPerformance(user) {
             // Fetch user's stocks and quantities
             const userStocks = await getUserStock(user);
+            const userValue = await getUserValue(user);
             let totalGain = 0;
             let totalLatestValue = 0;
             let totalOldValue = 0;
@@ -376,8 +377,21 @@ title: Stocks Portfolio
             console.log(`total increase: $${totalGain.toFixed(2)}, percent increase: ${percentIncrease.toFixed(2)}%`);
             const totalElement = document.getElementById("totalGain");
             const percentElement = document.getElementById("percentIncrease");
+            const valueElement = document.getElementById("portfolioValue");
             totalElement.textContent = `$${totalGain.toFixed(2)}`;
             percentElement.textContent = `${percentIncrease.toFixed(2)}%`;
+            valueElement.textContent = `$${userValue.toFixed(2)}`;
+        }
+        async function getUserValue(user) {
+            try {
+                const response = await fetch(`http://localhost:8085/user/portfolioValue?username=${user}`);
+                const stocksData = await response.json();
+                console.log(stocksData);
+                return stocksData;
+            } catch (error) {
+                console.error("Error fetching user stocks:", error);
+                return [];
+            }
         }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
