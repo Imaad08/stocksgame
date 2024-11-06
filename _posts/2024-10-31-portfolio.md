@@ -189,6 +189,8 @@ title: Stocks Portfolio
     </div>
     <!-- JavaScript to Fetch Data and Display Chart -->
     <script>
+    var userID = localStorage.getItem('userID')
+    console.log(userID);
         async function getStockPrice(stock) {
         try {
             const response = await fetch(`http://localhost:8085/api/stocks/${stock}`);
@@ -270,7 +272,7 @@ title: Stocks Portfolio
             }); 
       }
     async function createPortfolioChart() {
-        const userStocks = await getUserStock("testUser4");
+        const userStocks = await getUserStock(userID);
         const labels = [];
         const dataValues = [];
         const backgroundColors = ["#FF8C00", "#6A0DAD", "#001f3f", "#FF8C00"]; // Define colors for each stock
@@ -329,7 +331,7 @@ title: Stocks Portfolio
             }
         }
         async function populatePortfolioTable() {
-            const userStocks = await getUserStock("testUser4");
+            const userStocks = await getUserStock(userID);
             const portfolioTable = document.getElementById("portfolioTable");
             for (const stockInfo of userStocks) {
                 const { stockSymbol, quantity } = stockInfo;
@@ -381,7 +383,7 @@ title: Stocks Portfolio
             updatePrices();
             populatePortfolioTable();
             createPortfolioChart();
-            getPortfolioPerformance("testUser4");
+            getPortfolioPerformance(userID);
         });
     </script>
 </body>
