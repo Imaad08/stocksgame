@@ -253,9 +253,14 @@ title: Stocks Home
         </div>
     </div>
     <script>
+    //import userID from 'http://127.0.0.1:4100/student_2025/stocks/login'
+    var variable = localStorage.getItem('name')
+    console.log(variable);
+    var userID = localStorage.getItem('userID')
+    console.log(userID);
     async function getUserStocks() {
         try {
-            const response = await fetch(`http://localhost:8085/user/getStocks?username=testUser4`);
+            const response = await fetch(`http://localhost:8085/user/getStocks?username=${userID}`);
             return await response.json();
         } catch (error) {
             console.error("Error fetching user stocks:", error);
@@ -412,7 +417,8 @@ return new Promise((resolve) => {
       }
       document.addEventListener("DOMContentLoaded", () => {
             updateStockPrices(); // Call the function after DOM is fully loaded
-            getPortfolioPerformance("testUser4");
+            getPortfolioPerformance(userID);
+            //getUserIdFromAPI();
         });
 async function updateStockPrices() {
             const stockSymbols = ['Spotify', 'Apple', 'Google', 'Facebook', 'Microsoft'];
