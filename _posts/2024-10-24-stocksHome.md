@@ -176,10 +176,10 @@ title: Stocks Home
             <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
             <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
             <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-            <a href="{{site.baseurl}}/stocks/login">Logout</a>
+            <a onclick="logout()" href="{{site.baseurl}}/stocks/login">Logout</a> 
         </div>
     </nav>
-    <!-- Dashboard Content -->
+    <!-- Dashboard Content   -->
     <div class="dashboard">
         <div class="dashboard-content">
             <h1 id="userIDName" class="welcome">Hi Rafael, Welcome Back</h1>
@@ -510,4 +510,10 @@ async function getUserValue(user) {
                 console.error("Error fetching user stocks:", error);
                 return [];
             }
+        }
+async function logout() {
+            userID = "";
+            console.log(userID);
+            localStorage.setItem('userID', userID)
+            return(userID);   
         }

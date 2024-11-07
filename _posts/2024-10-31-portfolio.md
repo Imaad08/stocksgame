@@ -122,7 +122,7 @@ title: Stocks Portfolio
       <a href="{{site.baseurl}}/stocks/viewer">Stocks</a>
       <a href="{{site.baseurl}}/stocks/portfolio">Portfolio</a>
       <a href="{{site.baseurl}}/stocks/buysell">Buy/Sell</a>
-      <a href="{{site.baseurl}}/stocks/login">Logout</a>
+      <a onclick="logout()" href="{{site.baseurl}}/stocks/login">Logout</a>
         </div>
     </nav>
     <!-- Portfolio Content -->
@@ -385,6 +385,12 @@ title: Stocks Portfolio
                 console.error("Error fetching user stocks:", error);
                 return [];
             }
+        }
+        async function logout() {
+            userID = "";
+            console.log(userID);
+            localStorage.setItem('userID', userID)
+            return(userID);   
         }
         document.addEventListener("DOMContentLoaded", () => {
             updatePrices();
